@@ -133,3 +133,48 @@ function submitSignUp(email, username, password) {
     })
     .catch(err => console.log(err));
 }
+
+let createPostBtn = document.querySelector('#createPostBtn');
+
+createPostBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  const createPostForm = document.createElement('form');
+  document.body.appendChild(createPostForm);
+
+  const postTitle = document.createElement('input');
+  const postDescription = document.createElement('input');
+  const postSubmitBtn   = document.createElement('button');
+
+  postSubmitBtn.innerText = 'POST';
+
+  createPostForm.append(postTitle);
+  createPostForm.append(postDescription);
+  createPostForm.append(postSubmitBtn);
+
+  let title = postTitle.value;
+  let description = postDescription.value;
+
+  postSubmitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    let token = sessionStorage.getItem('token');
+    
+    fetch(`http://thesi.generalassemb.ly:8080/post`, {
+      method: 'POST',
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token,
+        title,
+        description
+      })})
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => console.log(err));
+  });
+});
