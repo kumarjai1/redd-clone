@@ -5,15 +5,15 @@ function fetchAPI () {
     fetch(`http://thesi.generalassemb.ly:8080/post/list`)
     .then(response => response.json())
     .then(response => {
-        console.log(response)
+        //console.log(response)
         displayPosts(response);
     })
     .catch(err => console.log(err)); 
 }
 
-//displays all posts
+//displays all latest 50 posts
 function displayPosts(arr) {
-    for (let i = 0; i <= 50; i++) {
+    for (let i = arr.length -1; i > arr.length-50; i--) {
 
       //creates tags for the post elements in the frontend
       let postContainer = document.createElement('div');
@@ -27,7 +27,7 @@ function displayPosts(arr) {
       postTitle.innerText = arr[i].title;
       postContent.innerText = arr[i].description;
 
-      console.log(postContent.innerText);
+      //console.log(postContent.innerText);
 
       //adds to the post container
       allPosts.append(postContainer);
@@ -37,3 +37,29 @@ function displayPosts(arr) {
     }
 }
 fetchAPI();
+
+//login feature
+let loginBtn = document.getElementById('loginBtn');
+let loginForm = document.getElementById('loginForm');
+loginBtn.addEventListener('click', function () {
+  console.log(loginForm);
+  let emailInput = document.createElement('input');
+  let passwordInput = document.createElement('input');
+  let submitBtn = document.createElement('button');
+  submitBtn.innerText = 'Login'
+  loginForm.append(emailInput);
+  loginForm.append(passwordInput); 
+  loginForm.append(submitBtn);
+
+  submitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    /**
+     * grab the values
+     * post it to the backend
+     */
+
+     let emailText = emailInput.value;
+     let passwordText = passwordInput.value;
+     console.log(emailText, passwordText);
+  })
+})
