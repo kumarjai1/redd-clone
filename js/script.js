@@ -109,11 +109,12 @@ signUpBtn.addEventListener('click', function(e) {
   submitBtn.addEventListener('click', function(e) {
     e.preventDefault();
 
-    submitSingUp(email.value, username.value, password.value)
+    submitSignUp(email.value, username.value, password.value)
   });
 });
 
-function submitSingUp(email, username, password) {
+// Sign Up Fetch Method: POST
+function submitSignUp(email, username, password) {
   fetch(`http://thesi.generalassemb.ly:8080/signup`, {
     method: 'POST',
     headers:{
