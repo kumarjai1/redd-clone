@@ -81,7 +81,13 @@ function submitLogin(email, password) {
         password
     })})
     .then(response => response.json())
-    .then(response => console.log(response))
+    .then(response => {
+      console.log(response.token);
+      sessionStorage.setItem('token', response.token);
+
+    })
     .catch(err => console.log(err));
 }
+
+console.log();
 
