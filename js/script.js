@@ -1,4 +1,5 @@
 const allPosts = document.getElementById('allPosts');
+let isAuthenticated;
 
 //fetches the post API
 function fetchAPI () {
@@ -68,8 +69,6 @@ loginBtn.addEventListener('click', function () {
 })
 
 function submitLogin(email, password) {
-  console.log(email, password);
-
   fetch(`http://thesi.generalassemb.ly:8080/login`, {
     method: 'POST',
     headers:{
@@ -82,12 +81,54 @@ function submitLogin(email, password) {
     })})
     .then(response => response.json())
     .then(response => {
-      console.log(response.token);
       sessionStorage.setItem('token', response.token);
-
+      isAuthenticated = !!sessionStorage.getItem('token');
     })
     .catch(err => console.log(err));
 }
 
-console.log();
+// Sign up features
+const signUpBtn = document.querySelector('#signUpBtn');
+const signUpForm = document.querySelector('#signUpForm');
 
+signUpBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  const email = document.createElement('input');
+  const username = document.createElement('input');
+  const password = document.createElement('input');
+  const submitBtn = document.createElement('button');
+
+  submitBtn.innerText = 'Sign Up';
+
+  signUpForm.append(email);
+  signUpForm.append(username);
+  signUpForm.append(password);
+  signUpForm.append(submitBtn);
+
+  submitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    submitSingUp(email.value, username.value, password.value)
+  });
+});
+
+function submitSingUp(email, username, password) {
+  fetch(`http://thesi.generalassemb.ly:8080/signup`, {
+    method: 'POST',
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        email,
+        username,
+        password,
+    })})
+    .then(response => response.json())
+    .then(response => {
+      sessionStorage.setItem('token', response.token);
+      isAuthenticated = !!sessionStorage.getItem('token');
+    })
+    .catch(err => console.log(err));
+}
