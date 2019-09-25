@@ -36,11 +36,13 @@ function displayPosts(arr) {
       postContainer.append(postContent);
     }
 }
+
 fetchAPI();
 
 //login feature
 let loginBtn = document.getElementById('loginBtn');
 let loginForm = document.getElementById('loginForm');
+
 loginBtn.addEventListener('click', function () {
   console.log(loginForm);
   let emailInput = document.createElement('input');
@@ -60,6 +62,26 @@ loginBtn.addEventListener('click', function () {
 
      let emailText = emailInput.value;
      let passwordText = passwordInput.value;
-     console.log(emailText, passwordText);
+     
+    submitLogin(emailText, passwordText);
   })
 })
+
+function submitLogin(email, password) {
+  console.log(email, password);
+
+  fetch(`http://thesi.generalassemb.ly:8080/login`, {
+    method: 'POST',
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        email,
+        password
+    })})
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
+}
+
