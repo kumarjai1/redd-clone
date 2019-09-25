@@ -7,7 +7,7 @@ function fetchAPI () {
     .then(response => response.json())
     .then(response => {
         //console.log(response)
-        displayPosts(response);
+        //displayPosts(response);
     })
     .catch(err => console.log(err)); 
 }
@@ -151,25 +151,24 @@ createPostBtn.addEventListener('click', function(e) {
   createPostForm.append(postTitle);
   createPostForm.append(postDescription);
   createPostForm.append(postSubmitBtn);
-
-  let title = postTitle.value;
-  let description = postDescription.value;
+  
 
   postSubmitBtn.addEventListener('click', function(e) {
     e.preventDefault();
-
+    let title = postTitle.value;
     let token = sessionStorage.getItem('token');
+    let description = postDescription.value;
     
     fetch(`http://thesi.generalassemb.ly:8080/post`, {
       method: 'POST',
       headers:{
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' +  token
       },
       body: JSON.stringify({
-        token,
-        title,
-        description
+        title: title,
+        description: description
       })})
       .then(response => response.json())
       .then(response => {
