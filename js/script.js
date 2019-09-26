@@ -102,6 +102,10 @@ loginBtn.addEventListener('click', function () {
   let emailInput = document.createElement('input');
   let passwordInput = document.createElement('input');
   let submitBtn = document.createElement('button');
+  emailInput.setAttribute('placeholder', 'email@domain.com');
+  passwordInput.setAttribute('placeholder', 'password');
+
+
   submitBtn.innerText = 'Login'
   loginForm.append(emailInput);
   loginForm.append(passwordInput); 
@@ -155,6 +159,10 @@ signUpBtn.addEventListener('click', function(e) {
 
   submitBtn.innerText = 'Sign Up';
 
+  email.setAttribute('placeholder', 'email@domain.com');
+  username.setAttribute('placeholder', 'username');
+  password.setAttribute('placeholder', 'password');
+
   signUpForm.append(email);
   signUpForm.append(username);
   signUpForm.append(password);
@@ -197,8 +205,11 @@ createPostBtn.addEventListener('click', function(e) {
   document.body.appendChild(createPostForm);
 
   const postTitle = document.createElement('input');
-  const postDescription = document.createElement('input');
+  const postDescription = document.createElement('textarea');
   const postSubmitBtn   = document.createElement('button');
+
+  postTitle.setAttribute('placeholder', 'Title');
+  postDescription.setAttribute('placeholder', 'Please describe your post in detail (Optional)');
 
   postSubmitBtn.innerText = 'POST';
 
@@ -317,6 +328,7 @@ function createComment () {
   postContainer.append(commentBox);
 
   textarea.setAttribute('id', 'textarea-text');
+  textarea.setAttribute('placeholder', 'Add a comment...');
 
   commentBox.append(textarea);
   commentBox.append(submitBtn);
