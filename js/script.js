@@ -113,15 +113,21 @@ loginBtn.addEventListener('click', function () {
 
   submitBtn.addEventListener('click', function(e) {
     e.preventDefault();
-    /**
-     * grab the values
-     * post it to the backend
-     */
 
      let emailText = emailInput.value;
      let passwordText = passwordInput.value;
      
-    submitLogin(emailText, passwordText);
+    submitLogin(emailText, passwordText);  
+    if (isAuthenticated) {
+      let logoutBtn = document.createElement('button');
+      logoutBtn.innerText = "Logout";
+      document.body.append(logoutBtn);
+
+      logoutBtn.addEventListener('click', function() {
+        sessionStorage.clear();
+      })
+    } 
+
   })
 })
 
@@ -360,8 +366,3 @@ function deleteComments (e) {
     .catch(err => console.log(err)); 
 }
 
-//deleteComments();
-
-function deleteUserComment (commentId) {
-
-}
