@@ -134,6 +134,7 @@ function submitLogin(email, password) {
     .then(response => response.json())
     .then(response => {
       sessionStorage.setItem('token', response.token);
+      sessionStorage.setItem('username', response.username);
       isAuthenticated = !!sessionStorage.getItem('token');
     })
     .catch(err => console.log(err));
@@ -263,6 +264,13 @@ function displayComments (response) {
     postContainer.append(commentBox);
     commentBox.append(username);
     commentBox.append(userComment);
+
+    if (user === sessionStorage.getItem('username')) {
+      console.log('username match');
+      const deleteCommentBtn = document.createElement('button');
+      deleteCommentBtn.innerText = 'Delete';
+      commentBox.append(deleteCommentBtn);
+    }
   })
 }
 
