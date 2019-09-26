@@ -3,6 +3,7 @@ let currentPostID;
 let isAuthenticated;
 let postsArr = [];
 let currentPost = {};
+let postContainer;
 
 //fetches the post API
 function fetchAPI () {
@@ -22,7 +23,7 @@ function displayPosts(arr) {
     for (let i = 0; i < arr.length; i++) {
 
       //creates tags for the post elements in the frontend
-      let postContainer = document.createElement('div');
+      postContainer = document.createElement('div');
       let postOwner = document.createElement('h4');
       let postTitle = document.createElement('a');
       let postContent = document.createElement('p');
@@ -239,6 +240,25 @@ function getComments (id) {
     .then(response => response.json())
     .then(response => {
         console.log(response);
+        displayComments(response);
     })
     .catch(err => console.log(err)); 
+}
+
+function displayComments (response) {
+  response.forEach(comment => {
+    let user = comment.user.username;
+    let commentText = comment.text;
+    
+    let username = document.createElement('h4'); 
+    let userComment = document.createElement('p');
+    let commentBox = document.createElement('div')
+
+    username.innerText = user;
+    userComment.innerText = commentText;
+
+    postContainer.append(commentBox);
+    commentBox.append(username);
+    commentBox.append(userComment);
+  })
 }
