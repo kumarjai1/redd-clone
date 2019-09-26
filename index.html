@@ -30,9 +30,9 @@
         <div class="modal-content is-clipped">
           <!-- Any other Bulma elements you want -->
               <!--form example-->
-          <form>
-              <div class="field">
-                  <label for="email" class="label"></label>
+          <form id="modalForm"> 
+              <!-- <div class="field">
+                  <label for="email" class="label">Enter email address</label>
                   <input type="text" class="input" placeholder="User Email">    
               </div>
               <div class="field">
@@ -43,7 +43,7 @@
               <div class="field">
                   <label for="password" class="label"></label>
                   <input type="text" class="input">    
-              </div>
+              </div> -->
           </form>
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
@@ -51,23 +51,7 @@
 
 
     <button class="button is-primary is-large modal-button" data-target="modal" aria-haspopup="true">Launch example modal</button>
-    <script>
-      let modalBtn = document.querySelector('.modal-button');
-      let modal = document.querySelector('.modal');
-      let close = document.querySelector('.modal-close')
-      console.log(modalBtn);
-      modalBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        modal.classList.toggle('visible');
-        modal.classList.add('is-active');
-      })
-      close.addEventListener('click', function(e) {
-        e.preventDefault();
-        modal.classList.remove('is-active');
-        modal.classList.toggle('visible');
-      })
-    </script>
-
+  
 
     <!-- <button id="loginBtn">Login</button> -->
     <form id="loginForm">

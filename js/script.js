@@ -103,39 +103,85 @@ navButtons.append(loginBtn);
 console.log(loginBtn);
 let loginForm = document.getElementById('loginForm');
 
-function createButton (id, innerText, className) {
-  let btn = document.createElement('button');
-  btn.setAttribute('id', id);
-  btn.innerText = innerText;
-  btn.setAttribute('class', className);
-  btn.classList.add('button');
-  return btn;
-}
 
-logout();
 
-loginBtn.addEventListener('click', function () {
+// logout();
+
+
+
+let modalBtn = document.querySelector('.modal-button');
+let modal = document.querySelector('.modal');
+let close = document.querySelector('.modal-close')
+console.log(modalBtn);
+close.addEventListener('click', function(e) {
+  e.preventDefault();
+  modal.classList.remove('is-active');
+  modal.classList.toggle('visible');
+})
+
+
+
+loginBtn.addEventListener('click', function (e) {
   console.log(loginForm);
-  let emailInput = document.createElement('input');
-  let passwordInput = document.createElement('input');
-  let submitBtn = document.createElement('button');
-  emailInput.setAttribute('placeholder', 'email@domain.com');
-  passwordInput.setAttribute('placeholder', 'password');
 
+  e.preventDefault();
+  modal.classList.toggle('visible');
+  modal.classList.add('is-active');
+
+  let modalForm = document.getElementById('modalForm');
+  let emailLabel = document.createElement('label');
+  let emailInput = document.createElement('input');
+  let passwordLabel = document.createElement('label');
+  let passwordInput = document.createElement('input');
+  let emailField = document.createElement('div');
+  let passwordField = document.createElement('div');
+
+  let submitBtn = createButton('submitBtn', 'Login', 'button');
+
+  emailField.setAttribute('class', 'field');
+  passwordField.setAttribute('class', 'field');
+
+  emailInput.setAttribute('placeholder', 'email@domain.com');
+  emailInput.setAttribute('for', 'email');
+  emailInput.setAttribute('class','input')
+
+  passwordInput.setAttribute('placeholder', 'password');
+  passwordInput.setAttribute('class','input')
+  
+  emailLabel.setAttribute('class', 'label');
+  emailLabel.setAttribute('for', 'email');
+  emailLabel.innerText = 'Enter email address';
+
+  passwordLabel.setAttribute('class', 'label')
+  passwordLabel.setAttribute('for', 'password');
+  passwordLabel.innerText = 'Enter your password';
 
   submitBtn.innerText = 'Login'
-  loginForm.append(emailInput);
-  loginForm.append(passwordInput); 
-  loginForm.append(submitBtn);
+
+  
+  modalForm.append(emailField);
+  modalForm.append(passwordField);
+  emailField.append(emailInput);
+  emailField.append(emailLabel);
+  passwordField.append(passwordInput); 
+  passwordField.append(passwordLabel); 
+
+  modalForm.append(submitBtn);
 
   submitBtn.addEventListener('click', function(e) {
     e.preventDefault();
 
      let emailText = emailInput.value;
      let passwordText = passwordInput.value;
-     
-    submitLogin(emailText, passwordText);   
+
+     submitLogin(emailText, passwordText);   
+     console.log(emailText, passwordText);
+
     logout();
+    modal.classList.remove('is-active');
+    modal.classList.toggle('visible');
+
+    
 
   })
 })
@@ -378,9 +424,10 @@ function deleteComments (e) {
 }
 
 function logout() {
-  if (isAuthenticated) {
-    let logoutBtn = document.createElement('button');
-    logoutBtn.innerText = "Logout";
+  console.log('logout func fired', isAuthenticated);
+  if (!!isAuthenticated) {
+    console.log('logout conditional fired');
+    let logoutBtn = createButton('logout', 'Logout', 'is-light');
     navButtons.append(logoutBtn);
     
     loginBtn.remove();
@@ -392,3 +439,11 @@ function logout() {
   }
 }
 
+function createButton (id, innerText, className) {
+  let btn = document.createElement('button');
+  btn.setAttribute('id', id);
+  btn.innerText = innerText;
+  btn.setAttribute('class', className);
+  btn.classList.add('button');
+  return btn;
+}
