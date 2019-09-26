@@ -255,7 +255,7 @@ function displayComments (response) {
     
     let username = document.createElement('h4'); 
     let userComment = document.createElement('p');
-    let commentBox = document.createElement('div')
+    let commentBox = document.createElement('div');
 
     username.innerText = user;
     userComment.innerText = commentText;
@@ -328,4 +328,8 @@ function deleteComments () {
     .catch(err => console.log(err)); 
 }
 
-deleteComments();
+//deleteComments();
+
+function deleteUserComment (commentId) {
+
+}
