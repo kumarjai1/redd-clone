@@ -1,5 +1,8 @@
 const allPosts = document.getElementById('allPosts');
+let currentPostID;
 let isAuthenticated;
+let postsArr = [];
+let currentPost = {};
 
 //fetches the post API
 function fetchAPI () {
@@ -7,6 +10,8 @@ function fetchAPI () {
     .then(response => response.json())
     .then(response => {
         console.log(response)
+        postsArr = response;
+        console.log({ postsArr });
         displayPosts(response);
     })
     .catch(err => console.log(err)); 
@@ -41,6 +46,30 @@ function displayPosts(arr) {
 
       postTitle.addEventListener('click', function(e) {
         console.log(e.target.dataset.id);
+        currentPostID = e.target.dataset.id;
+        allPosts.innerHTML = '';
+
+        postsArr.forEach(post => {
+          if (post.id === currentPostID) {
+            console.log(postsArr);
+            currentPost.id = post.id;
+            currentPost.title = post.title;
+            currentPost.description = post.description;
+            currentPost.user = post.user;
+            console.log({currentPost});
+
+            postContainer.classList.add('container');
+            postOwner.innerText = 'posted by ' + post.user.username;
+            postTitle.innerText = post.title;
+            postContent.innerText = post.description;
+          }
+        });
+
+
+        allPosts.append(postContainer);
+        postContainer.append(postOwner);
+        postContainer.append(postTitle);
+        postContainer.append(postContent);
       })
 
       postStyling (postOwner, postTitle, postContent);
