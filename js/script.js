@@ -266,8 +266,11 @@ function displayComments (response) {
   })
 }
 
-function postComments () {
+function postComments (e) {
+  e.preventDefault();
   let token = sessionStorage.getItem('token');
+  let commentText = document.querySelector('#textarea-text').value;
+
   fetch(`http://thesi.generalassemb.ly:8080/comment/${currentPostID}`, {
     method: 'POST',
     headers:{
@@ -276,7 +279,7 @@ function postComments () {
       'Authorization': 'Bearer ' + token
     },
     body: JSON.stringify({
-        text: 'frontend task'
+        text: commentText
     })})
     .then(response => response.json())
     .then(response => {
@@ -291,9 +294,12 @@ function createComment () {
   let commentBox = document.createElement('div');
   submitBtn.innerText = 'Submit Comment'
   postContainer.append(commentBox);
+
+  textarea.setAttribute('id', 'textarea-text');
+
   commentBox.append(textarea);
   commentBox.append(submitBtn);
   console.log(textarea);
 
-  //submitBtn.addEventListener('click', postComments);
+  submitBtn.addEventListener('click', postComments);
 }
