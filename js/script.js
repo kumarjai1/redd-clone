@@ -1,10 +1,12 @@
 const allPosts = document.getElementById('allPosts');
 let currentPostID;
-let isAuthenticated;
+let isAuthenticated = !!sessionStorage.getItem('token') || false;
+console.log(isAuthenticated);
 let postsArr = [];
 let currentPost = {};
 let postContainer;
 let commentBox;
+
 
 //fetches the post API
 function fetchAPI () {
@@ -97,6 +99,8 @@ fetchAPI();
 let loginBtn = document.getElementById('loginBtn');
 let loginForm = document.getElementById('loginForm');
 
+logout();
+
 loginBtn.addEventListener('click', function () {
   console.log(loginForm);
   let emailInput = document.createElement('input');
@@ -117,16 +121,8 @@ loginBtn.addEventListener('click', function () {
      let emailText = emailInput.value;
      let passwordText = passwordInput.value;
      
-    submitLogin(emailText, passwordText);  
-    if (isAuthenticated) {
-      let logoutBtn = document.createElement('button');
-      logoutBtn.innerText = "Logout";
-      document.body.append(logoutBtn);
-
-      logoutBtn.addEventListener('click', function() {
-        sessionStorage.clear();
-      })
-    } 
+    submitLogin(emailText, passwordText);   
+    logout();
 
   })
 })
@@ -198,6 +194,7 @@ function submitSignUp(email, username, password) {
     .then(response => {
       sessionStorage.setItem('token', response.token);
       isAuthenticated = !!sessionStorage.getItem('token');
+      logout();
     })
     .catch(err => console.log(err));
 }
@@ -366,3 +363,18 @@ function deleteComments (e) {
     .catch(err => console.log(err)); 
 }
 
+function logout() {
+  if (isAuthenticated) {
+    let logoutBtn = document.createElement('button');
+    logoutBtn.innerText = "Logout";
+    document.body.append(logoutBtn);
+    
+    loginBtn.remove();
+    loginForm.remove();
+  
+    logoutBtn.addEventListener('click', function() {
+      sessionStorage.clear();
+
+    })
+  }
+}
