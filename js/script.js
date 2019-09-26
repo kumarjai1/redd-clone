@@ -284,6 +284,7 @@ function postComments (e) {
     .then(response => response.json())
     .then(response => {
         console.log(response);
+        getComments(currentPostID);
     })
     .catch(err => console.log(err)); 
 }
