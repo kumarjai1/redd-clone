@@ -1,0 +1,7 @@
+#allPosts div:nth-of-type(n) {
+  border-bottom:1px solid grey;
+  /* border-top: .25px solid gray; */
+  margin-top: 25px;
+  padding-top:10px;
+  padding-bottom: 5px;
+}

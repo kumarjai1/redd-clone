@@ -7,24 +7,24 @@ function fetchAPI () {
     .then(response => response.json())
     .then(response => {
         //console.log(response)
-        //displayPosts(response);
+        displayPosts(response);
     })
     .catch(err => console.log(err)); 
 }
 
 //displays all latest 50 posts
 function displayPosts(arr) {
-    for (let i = arr.length -1; i > arr.length-50; i--) {
+    for (let i = 0; i < arr.length; i++) {
 
       //creates tags for the post elements in the frontend
       let postContainer = document.createElement('div');
       let postOwner = document.createElement('h4');
-      let postTitle = document.createElement('h1');
+      let postTitle = document.createElement('a');
       let postContent = document.createElement('p');
 
       //defines the content to the tags
       postContainer.classList.add('container');
-      postOwner.innerText = arr[i].user.username;
+      postOwner.innerText = 'posted by ' + arr[i].user.username;
       postTitle.innerText = arr[i].title;
       postContent.innerText = arr[i].description;
 
@@ -35,6 +35,8 @@ function displayPosts(arr) {
       postContainer.append(postOwner);
       postContainer.append(postTitle);
       postContainer.append(postContent);
+
+      postStyling (postOwner, postTitle, postContent);
     }
 }
 
@@ -177,3 +179,11 @@ createPostBtn.addEventListener('click', function(e) {
       .catch(err => console.log(err));
   });
 });
+
+
+function postStyling(postOwner, title, description) {
+  postOwner.setAttribute('class', 'is-size-7');
+  title.setAttribute('class', 'is-size-4');
+  title.classList.add('class', 'has-text-black-bis')
+  description.setAttribute('class', 'is-size-6');
+}
