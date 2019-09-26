@@ -260,18 +260,22 @@ function displayComments (response) {
 
     username.innerText = user;
     userComment.innerText = commentText;
-
+    
     postContainer.append(commentBox);
     commentBox.append(username);
     commentBox.append(userComment);
-
+    
+    // Logic for deleting comment buttons by matching username
     if (user === sessionStorage.getItem('username')) {
       console.log('username match');
       const deleteCommentBtn = document.createElement('button');
       deleteCommentBtn.innerText = 'Delete';
+      deleteCommentBtn.setAttribute('data-id', comment.id);
       commentBox.append(deleteCommentBtn);
+
+      deleteCommentBtn.addEventListener('click', deleteComments);
     }
-  })
+  });
 }
 
 function postComments (e) {
@@ -314,12 +318,12 @@ function createComment () {
 }
 
 
-function deleteComments () {
-  //e.preventDefault();
+function deleteComments (e) {
+  // console.log('delCom e', e);
   let token = sessionStorage.getItem('token');
   //let commentText = document.querySelector('#textarea-text').value;
-  //console.log("comments");
-  fetch(`http://thesi.generalassemb.ly:8080/comment/781`, {
+  console.log("comments", e.target.dataset.id);
+  fetch(`http://thesi.generalassemb.ly:8080/comment/${e.target.dataset.id}`, {
     method: 'DELETE',
     headers:{
       'Accept': 'application/json',
@@ -330,8 +334,7 @@ function deleteComments () {
       response.json();
     })
     .then(response => {
-        console.log(response);
-        //getComments(currentPostID);
+      getComments(currentPostID);
     })
     .catch(err => console.log(err)); 
 }
