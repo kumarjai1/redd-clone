@@ -4,6 +4,7 @@ let isAuthenticated;
 let postsArr = [];
 let currentPost = {};
 let postContainer;
+let commentBox;
 
 //fetches the post API
 function fetchAPI () {
@@ -250,20 +251,26 @@ function getComments (id) {
 }
 
 function displayComments (response) {
+  commentBox = document.createElement('div');
+  postContainer.append(commentBox);
+
   response.forEach(comment => {
     let user = comment.user.username;
     let commentText = comment.text;
     
     let username = document.createElement('h4'); 
     let userComment = document.createElement('p');
-    let commentBox = document.createElement('div');
+    let comments = document.createElement('div');
 
     username.innerText = user;
     userComment.innerText = commentText;
     
-    postContainer.append(commentBox);
-    commentBox.append(username);
-    commentBox.append(userComment);
+    commentBox.setAttribute('class', 'commmentBox');
+    comments.setAttribute('class', 'commments');
+
+    commentBox.append(comments);
+    comments.append(username);
+    comments.append(userComment);
     
     // Logic for deleting comment buttons by matching username
     if (user === sessionStorage.getItem('username')) {
@@ -271,7 +278,7 @@ function displayComments (response) {
       const deleteCommentBtn = document.createElement('button');
       deleteCommentBtn.innerText = 'Delete';
       deleteCommentBtn.setAttribute('data-id', comment.id);
-      commentBox.append(deleteCommentBtn);
+      comments.append(deleteCommentBtn);
 
       deleteCommentBtn.addEventListener('click', deleteComments);
     }
@@ -295,7 +302,8 @@ function postComments (e) {
     })})
     .then(response => response.json())
     .then(response => {
-        console.log(response);
+        // console.log(response);
+        commentBox.remove();
         getComments(currentPostID);
     })
     .catch(err => console.log(err)); 
@@ -334,6 +342,7 @@ function deleteComments (e) {
       response.json();
     })
     .then(response => {
+      commentBox.remove();
       getComments(currentPostID);
     })
     .catch(err => console.log(err)); 
