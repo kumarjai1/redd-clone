@@ -78,7 +78,9 @@ function displayPosts(arr) {
             console.log(postContainer);
 
             getComments(currentPostID);
-            postComments();
+            //postComments();
+            console.log("test")
+            createComment();
           }
         });
 
@@ -281,4 +283,17 @@ function postComments () {
         console.log(response);
     })
     .catch(err => console.log(err)); 
+}
+
+function createComment () {
+  let textarea = document.createElement('textarea');
+  let submitBtn = document.createElement('button');
+  let commentBox = document.createElement('div');
+  submitBtn.innerText = 'Submit Comment'
+  postContainer.append(commentBox);
+  commentBox.append(textarea);
+  commentBox.append(submitBtn);
+  console.log(textarea);
+
+  //submitBtn.addEventListener('click', postComments);
 }
