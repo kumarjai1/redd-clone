@@ -6,7 +6,7 @@ function fetchAPI () {
     fetch(`http://thesi.generalassemb.ly:8080/post/list`)
     .then(response => response.json())
     .then(response => {
-        //console.log(response)
+        console.log(response)
         displayPosts(response);
     })
     .catch(err => console.log(err)); 
@@ -30,11 +30,18 @@ function displayPosts(arr) {
 
       //console.log(postContent.innerText);
 
+      // Add data-id
+      postTitle.setAttribute('data-id', arr[i].id);
+
       //adds to the post container
       allPosts.append(postContainer);
       postContainer.append(postOwner);
       postContainer.append(postTitle);
       postContainer.append(postContent);
+
+      postTitle.addEventListener('click', function(e) {
+        console.log(e.target.dataset.id);
+      })
 
       postStyling (postOwner, postTitle, postContent);
     }
