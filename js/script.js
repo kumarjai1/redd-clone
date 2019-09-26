@@ -75,6 +75,8 @@ function displayPosts(arr) {
             postContainer.append(postContent);
             allPosts.append(postContainer);
             console.log(postContainer);
+
+            getComments(currentPostID);
           }
         });
 
@@ -230,4 +232,13 @@ function postStyling(postOwner, title, description) {
   title.setAttribute('class', 'is-size-4');
   title.classList.add('class', 'has-text-black-bis')
   description.setAttribute('class', 'is-size-6');
+}
+
+function getComments (id) {
+  fetch(`http://thesi.generalassemb.ly:8080/post/${id}/comment`)
+    .then(response => response.json())
+    .then(response => {
+        console.log(response);
+    })
+    .catch(err => console.log(err)); 
 }
