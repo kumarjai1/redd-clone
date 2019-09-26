@@ -304,3 +304,28 @@ function createComment () {
 
   submitBtn.addEventListener('click', postComments);
 }
+
+
+function deleteComments () {
+  //e.preventDefault();
+  let token = sessionStorage.getItem('token');
+  //let commentText = document.querySelector('#textarea-text').value;
+  //console.log("comments");
+  fetch(`http://thesi.generalassemb.ly:8080/comment/781`, {
+    method: 'DELETE',
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    }})
+    .then(response => {
+      response.json();
+    })
+    .then(response => {
+        console.log(response);
+        //getComments(currentPostID);
+    })
+    .catch(err => console.log(err)); 
+}
+
+deleteComments();
