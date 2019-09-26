@@ -78,6 +78,7 @@ function displayPosts(arr) {
             console.log(postContainer);
 
             getComments(currentPostID);
+            postComments();
           }
         });
 
@@ -261,4 +262,23 @@ function displayComments (response) {
     commentBox.append(username);
     commentBox.append(userComment);
   })
+}
+
+function postComments () {
+  let token = sessionStorage.getItem('token');
+  fetch(`http://thesi.generalassemb.ly:8080/comment/${currentPostID}`, {
+    method: 'POST',
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({
+        text: 'frontend task'
+    })})
+    .then(response => response.json())
+    .then(response => {
+        console.log(response);
+    })
+    .catch(err => console.log(err)); 
 }
