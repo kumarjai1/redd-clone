@@ -6,6 +6,8 @@ let postsArr = [];
 let currentPost = {};
 let postContainer;
 let commentBox;
+let navButtons = document.getElementById('navButtons');
+console.log(navButtons);
 
 
 //fetches the post API
@@ -96,8 +98,19 @@ function displayPosts(arr) {
 fetchAPI();
 
 //login feature
-let loginBtn = document.getElementById('loginBtn');
+let loginBtn = createButton('loginBtn', 'Login', 'is-light');
+navButtons.append(loginBtn);
+console.log(loginBtn);
 let loginForm = document.getElementById('loginForm');
+
+function createButton (id, innerText, className) {
+  let btn = document.createElement('button');
+  btn.setAttribute('id', id);
+  btn.innerText = innerText;
+  btn.setAttribute('class', className);
+  btn.classList.add('button');
+  return btn;
+}
 
 logout();
 
@@ -148,7 +161,8 @@ function submitLogin(email, password) {
 }
 
 // Sign up features
-const signUpBtn = document.querySelector('#signUpBtn');
+const signUpBtn = createButton('signUpBtn', 'Sign Up', 'is-primary');
+navButtons.append(signUpBtn);
 const signUpForm = document.querySelector('#signUpForm');
 
 signUpBtn.addEventListener('click', function(e) {
@@ -367,14 +381,14 @@ function logout() {
   if (isAuthenticated) {
     let logoutBtn = document.createElement('button');
     logoutBtn.innerText = "Logout";
-    document.body.append(logoutBtn);
+    navButtons.append(logoutBtn);
     
     loginBtn.remove();
     loginForm.remove();
   
     logoutBtn.addEventListener('click', function() {
       sessionStorage.clear();
-
     })
   }
 }
+
