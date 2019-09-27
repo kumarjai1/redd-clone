@@ -96,7 +96,7 @@ function displayPosts(arr) {
     }
 }
 
-// fetchAPI();
+fetchAPI();
 
 /**
  * @name attrSetter
@@ -344,21 +344,45 @@ let createPostBtn = document.querySelector('#createPostBtn');
 createPostBtn.addEventListener('click', function(e) {
   e.preventDefault();
 
-  const createPostForm = document.createElement('form');
-  document.body.appendChild(createPostForm);
+  //const createPostForm = document.createElement('form');
+  //document.body.appendChild(createPostForm);
 
-  const postTitle = document.createElement('input');
-  const postDescription = document.createElement('textarea');
-  const postSubmitBtn   = document.createElement('button');
+  while (modalForm.firstChild) modalForm.removeChild(modalForm.firstChild);
 
-  postTitle.setAttribute('placeholder', 'Title');
-  postDescription.setAttribute('placeholder', 'Please describe your post in detail (Optional)');
+  modal.classList.toggle('visible');
+  modal.classList.add('is-active');
+  
+  let titleField = document.createElement('div');
+  let descField = document.createElement('div');
 
-  postSubmitBtn.innerText = 'POST';
+  let titleLabel = document.createElement('label');
+  let descLabel = document.createElement('label');
 
-  createPostForm.append(postTitle);
-  createPostForm.append(postDescription);
-  createPostForm.append(postSubmitBtn);
+  let postTitle = document.createElement('input');
+  let postDescription = document.createElement('textarea');
+  let postSubmitBtn   = createButton('postSubmitBtn', 'POST', 'button');
+  
+  titleField.setAttribute('class', 'field');
+  descField.setAttribute('class', 'field');
+
+  titleLabel = attrSetter(titleLabel, [['class', 'label'], ['for', 'title'] ]);
+  descLabel = attrSetter(descLabel, [['class', 'label'], ['for', 'description']]);
+
+  postTitle = attrSetter(postTitle, [['class', 'input'], ['placeholder', 'Post Title']]);
+  postDescription = attrSetter(postDescription, [['class', 'input'], ['placeholder', 'Please describe your post in detail (Optional)']]);
+  console.log(postTitle, postDescription);
+
+  // postTitle.setAttribute('placeholder', 'Title');
+  // postDescription.setAttribute('placeholder', 'Please describe your post in detail (Optional)');
+  // postSubmitBtn.innerText = 'POST';
+
+  titleField = multiAppender(titleField, [postTitle, titleLabel]);
+  descField = multiAppender(descField, [postDescription, descLabel]);
+  modalForm = multiAppender(modalForm, [titleField, descField, postSubmitBtn]);
+
+  // createPostForm.append(postTitle);
+  // createPostForm.append(postDescription);
+  // createPostForm.append(postSubmitBtn);
   
   postSubmitBtn.addEventListener('click', function(e) {
     e.preventDefault();
@@ -380,6 +404,8 @@ createPostBtn.addEventListener('click', function(e) {
       .then(response => response.json())
       .then(response => {
         console.log(response);
+        modal.classList.remove('is-active');
+        modal.classList.toggle('visible');  
       })
       .catch(err => console.log(err));
   });
@@ -514,7 +540,7 @@ function logout() {
 
     //say hello with username
     navButtons.append(`hi, ${sessionStorage.username}`);
-    //loginForm.remove();
+    //loginForm.remove(); 
   
     logoutBtn.addEventListener('click', function() {
       sessionStorage.clear();
