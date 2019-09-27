@@ -205,8 +205,6 @@ loginBtn.addEventListener('click', function (e) {
 
      submitLogin(emailText, passwordText);   
      console.log(isAuthenticated);
-    modal.classList.remove('is-active');
-    modal.classList.toggle('visible');
   })
 })
 
@@ -227,8 +225,9 @@ function submitLogin(email, password) {
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('username', response.username);
         isAuthenticated = !!sessionStorage.getItem('token');
-        // navButtons.append(`hi, ${sessionStorage.getItem('username')}`);
         logout();
+        modal.classList.remove('is-active');
+        modal.classList.toggle('visible');
       } else {
         alert('Login Info Incorrect');
       }
@@ -337,15 +336,19 @@ function submitSignUp(emailInput, usernameInput, passwordInput) {
     })})
     .then(response => response.json())
     .then(response => {
-      console.log(response);
+      if (!!response.token) {
+        console.log(response);
 
-      sessionStorage.setItem('token', response.token);
-      sessionStorage.setItem('username', response.username);
-      isAuthenticated = !!sessionStorage.getItem('token');
-      logout();
-      
-      modal.classList.remove('is-active');
-      modal.classList.toggle('visible');
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('username', response.username);
+        isAuthenticated = !!sessionStorage.getItem('token');
+        logout();
+        
+        modal.classList.remove('is-active');
+        modal.classList.toggle('visible');
+      } else {
+        alert('Email incorrect or username already exists');
+      }
     })
     .catch(err => console.log(err));
 }
