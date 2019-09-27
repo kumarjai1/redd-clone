@@ -319,6 +319,8 @@ signUpBtn.addEventListener('click', function(e) {
 
 // Sign Up Fetch Method: POST
 function submitSignUp(emailInput, usernameInput, passwordInput) {
+  console.log(emailInput, usernameInput, passwordInput);
+
   fetch(`http://thesi.generalassemb.ly:8080/signup`, {
     method: 'POST',
     headers:{
@@ -326,19 +328,22 @@ function submitSignUp(emailInput, usernameInput, passwordInput) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-        emailInput,
-        usernameInput,
-        passwordInput,
+        email: emailInput,
+        password: passwordInput,
+        username: usernameInput,
     })})
     .then(response => response.json())
     .then(response => {
+      console.log(response);
+
       sessionStorage.setItem('token', response.token);
+      sessionStorage.setItem('username', response.username);
       isAuthenticated = !!sessionStorage.getItem('token');
       logout();
 
       modal.classList.remove('is-active');
       modal.classList.toggle('visible');
-      navButtons.append(`hi, ${usernameInput}`);
+      navButtons.append(`hi, ${sessionStorage.getItem('username')}`);
     })
     .catch(err => console.log(err));
 }
@@ -562,3 +567,5 @@ function createButton (id, innerText, className) {
   btn.classList.add('button');
   return btn;
 }
+
+logout();
