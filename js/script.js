@@ -135,6 +135,9 @@ loginBtn.addEventListener('click', function (e) {
   let passwordInput = document.createElement('input');
   let emailField = document.createElement('div');
   let passwordField = document.createElement('div');
+  let loginHeading = document.createElement('h2');
+  loginHeading.innerHTML = "Login To Redd Clone </br></br>";
+  loginHeading.setAttribute('class', 'is-size-5');
 
   let submitBtn = createButton('submitBtn', 'Login', 'button');
 
@@ -156,9 +159,10 @@ loginBtn.addEventListener('click', function (e) {
   passwordLabel.setAttribute('for', 'password');
   passwordLabel.innerText = 'Enter your password';
 
-  submitBtn.innerText = 'Login'
+  submitBtn.innerText = 'Login';
+  submitBtn.classList.add('is-dark')
 
-  
+  modalForm.append(loginHeading);
   modalForm.append(emailField);
   modalForm.append(passwordField);
   emailField.append(emailInput);
@@ -175,7 +179,7 @@ loginBtn.addEventListener('click', function (e) {
      let passwordText = passwordInput.value;
 
      submitLogin(emailText, passwordText);   
-     console.log(emailText, passwordText);
+     console.log(isAuthenticated);
 
     logout();
     modal.classList.remove('is-active');
@@ -202,6 +206,7 @@ function submitLogin(email, password) {
       sessionStorage.setItem('token', response.token);
       sessionStorage.setItem('username', response.username);
       isAuthenticated = !!sessionStorage.getItem('token');
+      
     })
     .catch(err => console.log(err));
 }
@@ -429,9 +434,13 @@ function logout() {
     console.log('logout conditional fired');
     let logoutBtn = createButton('logout', 'Logout', 'is-light');
     navButtons.append(logoutBtn);
-    
+      
     loginBtn.remove();
-    loginForm.remove();
+    signUpBtn.remove();
+
+    //say hello with username
+    navButtons.append(`hi, ${sessionStorage.username}`);
+    //loginForm.remove();
   
     logoutBtn.addEventListener('click', function() {
       sessionStorage.clear();
