@@ -431,7 +431,7 @@ createPostBtn.addEventListener('click', function(e) {
       .then(response => {
         if (!token) {
           alert('You must be logged in to post');
-        } else if (!!title) { 
+        } else if (!title) { 
           alert('Post must have a title');
         } else {
           console.log(response);
