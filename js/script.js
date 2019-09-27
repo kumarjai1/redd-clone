@@ -228,7 +228,8 @@ function submitLogin(email, password) {
       sessionStorage.setItem('token', response.token);
       sessionStorage.setItem('username', response.username);
       isAuthenticated = !!sessionStorage.getItem('token');
-      navButtons.append(`hi, ${sessionStorage.getItem('username')}`);
+      // navButtons.append(`hi, ${sessionStorage.getItem('username')}`);
+      logout();
     })
     .catch(err => console.log(err));
 }
@@ -340,10 +341,9 @@ function submitSignUp(emailInput, usernameInput, passwordInput) {
       sessionStorage.setItem('username', response.username);
       isAuthenticated = !!sessionStorage.getItem('token');
       logout();
-
+      
       modal.classList.remove('is-active');
       modal.classList.toggle('visible');
-      navButtons.append(`hi, ${sessionStorage.getItem('username')}`);
     })
     .catch(err => console.log(err));
 }
