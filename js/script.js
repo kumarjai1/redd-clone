@@ -205,8 +205,6 @@ loginBtn.addEventListener('click', function (e) {
 
      submitLogin(emailText, passwordText);   
      console.log(isAuthenticated);
-
-    logout();
     modal.classList.remove('is-active');
     modal.classList.toggle('visible');
   })
@@ -225,11 +223,15 @@ function submitLogin(email, password) {
     })})
     .then(response => response.json())
     .then(response => {
-      sessionStorage.setItem('token', response.token);
-      sessionStorage.setItem('username', response.username);
-      isAuthenticated = !!sessionStorage.getItem('token');
-      // navButtons.append(`hi, ${sessionStorage.getItem('username')}`);
-      logout();
+      if (!!response.token) {
+        sessionStorage.setItem('token', response.token);
+        sessionStorage.setItem('username', response.username);
+        isAuthenticated = !!sessionStorage.getItem('token');
+        // navButtons.append(`hi, ${sessionStorage.getItem('username')}`);
+        logout();
+      } else {
+        alert('Login Info Incorrect');
+      }
     })
     .catch(err => console.log(err));
 }
