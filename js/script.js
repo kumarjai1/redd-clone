@@ -1,4 +1,4 @@
-const allPosts = document.getElementById('allPosts');
+let allPosts = document.getElementById('allPosts');
 let currentPostID;
 let isAuthenticated = !!sessionStorage.getItem('token') || false;
 console.log(isAuthenticated);
@@ -8,7 +8,7 @@ let postContainer;
 let commentBox;
 let navButtons = document.getElementById('navButtons');
 let modalForm = document.getElementById('modalForm');
-console.log(navButtons);
+// console.log(navButtons);
 
 
 fetchAPI();
@@ -18,9 +18,9 @@ function fetchAPI () {
     fetch(`http://thesi.generalassemb.ly:8080/post/list`)
     .then(response => response.json())
     .then(response => {
-        console.log(response)
+        // console.log(response)
         postsArr = response;
-        console.log({ postsArr });
+        // console.log({ postsArr });
         displayPosts(response);
     })
     .catch(err => console.log(err)); 
@@ -68,7 +68,7 @@ function displayPosts(arr) {
       }
 
       postTitle.addEventListener('click', function(e) {
-        console.log(e.target.dataset.id);
+        // console.log(e.target.dataset.id);
         currentPostID = e.target.dataset.id;
 
         // Empties All Posts View for Single Post View
@@ -82,7 +82,7 @@ function displayPosts(arr) {
             currentPost.title = post.title;
             currentPost.description = post.description;
             currentPost.user = post.user;
-            console.log('currentPost', currentPostID);
+            // console.log('currentPost', currentPostID);
 
             // Create Single View Post Elements
             const singlePostTitle = document.createElement('h1');
@@ -97,11 +97,10 @@ function displayPosts(arr) {
             postContainer.append(singlePostTitle);
             postContainer.append(postContent);
             allPosts.append(postContainer);
-            console.log(postContainer);
+            // console.log(postContainer);
 
             getComments(currentPostID);
             //postComments();
-            console.log("test")
             createComment();
           }
         });
@@ -145,13 +144,13 @@ function multiAppender(parent, children) {
 //login feature
 let loginBtn = createButton('loginBtn', 'Login', 'is-primary is-outlined');
 navButtons.append(loginBtn);
-console.log(loginBtn);
+// console.log(loginBtn);
 let loginForm = document.getElementById('loginForm');
 
 let modalBtn = document.querySelector('.modal-button');
 let modal = document.querySelector('.modal');
 let close = document.querySelector('.modal-close')
-console.log(modalBtn);
+// console.log(modalBtn);
 close.addEventListener('click', function(e) {
   e.preventDefault();
   modal.classList.remove('is-active');
@@ -159,7 +158,7 @@ close.addEventListener('click', function(e) {
 })
 
 loginBtn.addEventListener('click', function (e) {
-  console.log(loginForm);
+  // console.log(loginForm);
 
   e.preventDefault();
 
@@ -216,7 +215,7 @@ loginBtn.addEventListener('click', function (e) {
      let passwordText = passwordInput.value;
 
      submitLogin(emailText, passwordText);   
-     console.log(isAuthenticated);
+    //  console.log(isAuthenticated);
   })
 })
 
@@ -333,7 +332,7 @@ signUpBtn.addEventListener('click', function(e) {
 
 // Sign Up Fetch Method: POST
 function submitSignUp(emailInput, usernameInput, passwordInput) {
-  console.log(emailInput, usernameInput, passwordInput);
+  // console.log(emailInput, usernameInput, passwordInput);
 
   fetch(`http://thesi.generalassemb.ly:8080/signup`, {
     method: 'POST',
@@ -349,7 +348,7 @@ function submitSignUp(emailInput, usernameInput, passwordInput) {
     .then(response => response.json())
     .then(response => {
       if (!!response.token) {
-        console.log(response);
+        // console.log(response);
 
         sessionStorage.setItem('token', response.token);
         sessionStorage.setItem('username', response.username);
@@ -396,7 +395,7 @@ createPostBtn.addEventListener('click', function(e) {
 
   postTitle = attrSetter(postTitle, [['class', 'input'], ['placeholder', 'Post Title']]);
   postDescription = attrSetter(postDescription, [['class', 'input'], ['placeholder', 'Please describe your post in detail (Optional)']]);
-  console.log(postTitle, postDescription);
+  // console.log(postTitle, postDescription);
 
   // postTitle.setAttribute('placeholder', 'Title');
   // postDescription.setAttribute('placeholder', 'Please describe your post in detail (Optional)');
@@ -456,7 +455,7 @@ function getComments (id) {
   fetch(`http://thesi.generalassemb.ly:8080/post/${id}/comment`)
     .then(response => response.json())
     .then(response => {
-        console.log(response);
+        // console.log(response);
         displayComments(response);
     })
     .catch(err => console.log(err)); 
@@ -519,7 +518,7 @@ function postComments (e) {
         commentBox.remove();
         getComments(currentPostID);
         commentText.value ='';
-        console.log(commentText);
+        // console.log(commentText);
     })
     .catch(err => console.log(err)); 
 }
@@ -576,7 +575,14 @@ function logout() {
     let logoutBtn = createButton('logout', 'Logout', 'is-light');
     while (navButtons.firstChild) navButtons.removeChild(navButtons.firstChild);
     navButtons.append(logoutBtn);
-    navButtons.append(`Hi, ${username}`);
+    
+    let profile = document.createElement('a');
+    profile.innerHTML = `<i class="material-icons">
+    person</i> ${username}`;
+    navButtons.append(profile);
+
+    profile.addEventListener('click', getProfile);
+
     //say hello with username
     //loginForm.remove(); 
   
@@ -596,6 +602,82 @@ function createButton (id, innerText, className) {
   btn.setAttribute('class', className);
   btn.classList.add('button');
   return btn;
+}
+
+
+function getProfile () {
+  fetch(`http://thesi.generalassemb.ly:8080/profile`, {
+    method: 'GET',
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  sessionStorage.getItem('token')
+    }})
+    .then(response => response.json())
+    .then(response => {
+      isProfile(response);
+    })
+    .catch(err => console.log(err));
+}
+
+function createProfile(email, mobile, address) {
+  
+  fetch(`http://thesi.generalassemb.ly:8080/profile`, {
+    method: 'POST',
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  sessionStorage.getItem('token')
+    },
+    body: JSON.stringify({
+        additionalEmail: email,
+        mobile: mobile,
+        address: address        
+    })})
+    .then(response => response.json())
+    .then(response => {
+      isProfile(response);
+    })
+    .catch(err => console.log(err));
+}
+
+
+function isProfile (response) {
+  while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
+  if (!!response.id) {
+    displayProfile(response);   
+  }
+  else {
+    displayProfileForm();
+  }
+}
+
+function displayProfile (response) {
+  let addEmail = document.createElement('p');
+  let mobile = document.createElement('p');
+  let address = document.createElement('p');
+  let username = document.createElement('p');
+
+  addEmail.innerText = response.additionalEmail;
+  mobile.innerText = response.mobile;
+  address.innerText = response.address;
+  username.innerText = response.user.username;
+
+  allPosts = multiAppender(allPosts, [addEmail, mobile, address, username]);
+}
+
+function displayProfileForm () {
+  
+  let addEmail = document.createElement('input');
+  let mobile = document.createElement('input');
+  let address = document.createElement('input');
+  let createProfileBtn = createButton('createProfile', 'Create Profile', 'button is-primary');
+  
+  allPosts = multiAppender(allPosts, [addEmail, mobile, address, createProfileBtn]);
+
+  createProfileBtn.addEventListener('click', function () {
+    createProfile(addEmail.value, mobile.value, address.value);
+  })
 }
 
 logout();
