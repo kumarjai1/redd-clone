@@ -541,12 +541,15 @@ function deleteComments (e) {
 }
 
 function logout() {
+  let username = sessionStorage.getItem('username') || '';
+
   console.log('logout func fired', isAuthenticated);
   if (!!isAuthenticated) {
     console.log('logout conditional fired');
     let logoutBtn = createButton('logout', 'Logout', 'is-light');
     while (navButtons.firstChild) navButtons.removeChild(navButtons.firstChild);
     navButtons.append(logoutBtn);
+    navButtons.append(`Hi, ${username}`);
     //say hello with username
     //loginForm.remove(); 
   
