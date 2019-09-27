@@ -338,6 +338,7 @@ function submitSignUp(emailInput, usernameInput, passwordInput) {
 
       modal.classList.remove('is-active');
       modal.classList.toggle('visible');
+      navButtons.append(`hi, ${usernameInput}`);
     })
     .catch(err => console.log(err));
 }
@@ -539,17 +540,16 @@ function logout() {
   if (!!isAuthenticated) {
     console.log('logout conditional fired');
     let logoutBtn = createButton('logout', 'Logout', 'is-light');
+    while (navButtons.firstChild) navButtons.removeChild(navButtons.firstChild);
     navButtons.append(logoutBtn);
-      
-    loginBtn.remove();
-    signUpBtn.remove();
-
     //say hello with username
     //loginForm.remove(); 
   
     logoutBtn.addEventListener('click', function() {
       sessionStorage.clear();
+      while (navButtons.firstChild) navButtons.removeChild(navButtons.firstChild);
       navButtons.append(loginBtn);
+      navButtons.append(signUpBtn);
     })
   }
 }
