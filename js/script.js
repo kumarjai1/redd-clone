@@ -31,7 +31,7 @@ function displayPosts(arr) {
   while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
     for (let i = arr.length-1; i >= arr.length-25; i--) {
       if (!arr[i]) break;
-      
+
       //creates tags for the post elements in the frontend
       postContainer = document.createElement('div');
       let postOwner = document.createElement('h4');
@@ -228,7 +228,7 @@ function submitLogin(email, password) {
       sessionStorage.setItem('token', response.token);
       sessionStorage.setItem('username', response.username);
       isAuthenticated = !!sessionStorage.getItem('token');
-      
+      navButtons.append(`hi, ${sessionStorage.getItem('username')}`);
     })
     .catch(err => console.log(err));
 }
@@ -545,11 +545,11 @@ function logout() {
     signUpBtn.remove();
 
     //say hello with username
-    navButtons.append(`hi, ${sessionStorage.username}`);
     //loginForm.remove(); 
   
     logoutBtn.addEventListener('click', function() {
       sessionStorage.clear();
+      navButtons.append(loginBtn);
     })
   }
 }
