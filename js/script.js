@@ -61,6 +61,7 @@ function displayPosts(arr) {
         const deletePostBtn = document.createElement('button');
         deletePostBtn.innerText = 'Delete';
         deletePostBtn.setAttribute('data-id', arr[i].id);
+        deletePostBtn.setAttribute('class', 'button is-dark is-small');
         postContainer.append(deletePostBtn);
   
         // deletePostBtn.addEventListener('click', deletePost);
@@ -428,10 +429,16 @@ createPostBtn.addEventListener('click', function(e) {
       })})
       .then(response => response.json())
       .then(response => {
-        console.log(response);
-        modal.classList.remove('is-active');
-        modal.classList.toggle('visible');  
-        fetchAPI ();
+        if (!token) {
+          alert('You must be logged in to post');
+        } else if (!!title) { 
+          alert('Post must have a title');
+        } else {
+          console.log(response);
+          modal.classList.remove('is-active');
+          modal.classList.toggle('visible');  
+          fetchAPI ();
+        }
       })
       .catch(err => console.log(err));
   });
@@ -483,6 +490,7 @@ function displayComments (response) {
       const deleteCommentBtn = document.createElement('button');
       deleteCommentBtn.innerText = 'Delete';
       deleteCommentBtn.setAttribute('data-id', comment.id);
+      deleteCommentBtn.setAttribute('class', 'button is-dark is-small');
       comments.append(deleteCommentBtn);
 
       deleteCommentBtn.addEventListener('click', deleteComments);
