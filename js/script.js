@@ -96,7 +96,7 @@ function displayPosts(arr) {
     }
 }
 
-// fetchAPI();
+fetchAPI();
 
 /**
  * @name attrSetter
