@@ -32,6 +32,8 @@ function displayPosts(arr) {
     for (let i = arr.length-1; i >= arr.length-25; i--) {
       if (!arr[i]) break;
 
+      let user = arr[i].user.username;
+
       //creates tags for the post elements in the frontend
       postContainer = document.createElement('div');
       let postOwner = document.createElement('h4');
@@ -54,6 +56,15 @@ function displayPosts(arr) {
       postContainer.append(postOwner);
       postContainer.append(postTitle);
       postContainer.append(postContent);
+
+      if (user === sessionStorage.getItem('username')) {
+        const deletePostBtn = document.createElement('button');
+        deletePostBtn.innerText = 'Delete';
+        deletePostBtn.setAttribute('data-id', arr[i].id);
+        postContainer.append(deletePostBtn);
+  
+        // deletePostBtn.addEventListener('click', deletePost);
+      }
 
       postTitle.addEventListener('click', function(e) {
         console.log(e.target.dataset.id);
