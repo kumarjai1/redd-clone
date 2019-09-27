@@ -7,6 +7,7 @@ let currentPost = {};
 let postContainer;
 let commentBox;
 let navButtons = document.getElementById('navButtons');
+let modalForm = document.getElementById('modalForm');
 console.log(navButtons);
 
 
@@ -95,19 +96,43 @@ function displayPosts(arr) {
     }
 }
 
-fetchAPI();
+// fetchAPI();
+
+/**
+ * @name attrSetter
+ * @description Takes a variable storing a DOM element and sets multiple attributes to the element
+ * @param { variable } elVar The variable storing the element to set attributes to
+ * @param { array } attrs An array of arrays of attributes to set to the element where arr[0] is the attribute and arr[1] is the attribute's value
+ * @returns Returns the variable storing the DOM element
+ */
+function attrSetter(elVar, attrs) {
+  attrs.forEach(attr => {
+    elVar.setAttribute(attr[0], attr[1]);
+  });
+
+  return elVar;
+}
+
+/**
+ * @name multiAppender
+ * @description Takes an array of child nodes and appends the child nodes to the parent node
+ * @param { variable } parent The parent node to append the child elements to
+ * @param { array } children An array of child nodes to append to the parent
+ * @returns A variable storing the parent node
+ */
+function multiAppender(parent, children) {
+  children.forEach(child => {
+    parent.append(child);
+  });
+
+  return parent
+}
 
 //login feature
 let loginBtn = createButton('loginBtn', 'Login', 'is-light');
 navButtons.append(loginBtn);
 console.log(loginBtn);
 let loginForm = document.getElementById('loginForm');
-
-
-
-// logout();
-
-
 
 let modalBtn = document.querySelector('.modal-button');
 let modal = document.querySelector('.modal');
@@ -119,16 +144,17 @@ close.addEventListener('click', function(e) {
   modal.classList.toggle('visible');
 })
 
-
-
 loginBtn.addEventListener('click', function (e) {
   console.log(loginForm);
 
   e.preventDefault();
+
+  // Empties the modal to prevent redunt forms being appended
+  while (modalForm.firstChild) modalForm.removeChild(modalForm.firstChild);
+
   modal.classList.toggle('visible');
   modal.classList.add('is-active');
 
-  let modalForm = document.getElementById('modalForm');
   let emailLabel = document.createElement('label');
   let emailInput = document.createElement('input');
   let passwordLabel = document.createElement('label');
@@ -140,14 +166,10 @@ loginBtn.addEventListener('click', function (e) {
 
   emailField.setAttribute('class', 'field');
   passwordField.setAttribute('class', 'field');
-
-  emailInput.setAttribute('placeholder', 'email@domain.com');
-  emailInput.setAttribute('for', 'email');
-  emailInput.setAttribute('class','input')
-
-  passwordInput.setAttribute('placeholder', 'password');
-  passwordInput.setAttribute('class','input')
   
+  emailInput = attrSetter(emailInput, [ [ 'placeholder', 'email@domain.com' ], [ 'for', 'email' ], [ 'class','input' ] ]);
+  passwordInput = attrSetter(passwordInput, [ [ 'placeholder', 'password' ], [ 'for', 'password' ], [ 'class', 'input' ] ]);
+
   emailLabel.setAttribute('class', 'label');
   emailLabel.setAttribute('for', 'email');
   emailLabel.innerText = 'Enter email address';
@@ -158,7 +180,6 @@ loginBtn.addEventListener('click', function (e) {
 
   submitBtn.innerText = 'Login'
 
-  
   modalForm.append(emailField);
   modalForm.append(passwordField);
   emailField.append(emailInput);
@@ -180,9 +201,6 @@ loginBtn.addEventListener('click', function (e) {
     logout();
     modal.classList.remove('is-active');
     modal.classList.toggle('visible');
-
-    
-
   })
 })
 
@@ -209,36 +227,89 @@ function submitLogin(email, password) {
 // Sign up features
 const signUpBtn = createButton('signUpBtn', 'Sign Up', 'is-primary');
 navButtons.append(signUpBtn);
+
 const signUpForm = document.querySelector('#signUpForm');
 
 signUpBtn.addEventListener('click', function(e) {
   e.preventDefault();
 
-  const email = document.createElement('input');
-  const username = document.createElement('input');
-  const password = document.createElement('input');
-  const submitBtn = document.createElement('button');
+  while (modalForm.firstChild) modalForm.removeChild(modalForm.firstChild);
 
-  submitBtn.innerText = 'Sign Up';
+  modal.classList.toggle('visible');
+  modal.classList.add('is-active');
 
-  email.setAttribute('placeholder', 'email@domain.com');
-  username.setAttribute('placeholder', 'username');
-  password.setAttribute('placeholder', 'password');
+  let emailInput = document.createElement('input');
+  let emailLabel = document.createElement('label');
+  let emailField = document.createElement('div');
+  
+  let passwordInput = document.createElement('input');
+  let passwordLabel = document.createElement('label');
+  let passwordField = document.createElement('div');
+  
+  let usernameInput = document.createElement('input');
+  let usernameLabel = document.createElement('label');
+  let usernameField = document.createElement('div');
+  
+  let submitBtn = createButton('submitBtn', 'Sign Up', 'is-light');
 
-  signUpForm.append(email);
-  signUpForm.append(username);
-  signUpForm.append(password);
-  signUpForm.append(submitBtn);
+  usernameInput.setAttribute('placeholder', 'username');
+
+  emailField.setAttribute('class', 'field');
+  usernameField.setAttribute('class', 'field');
+  passwordField.setAttribute('class', 'field');
+
+  emailInput = attrSetter(emailInput, [ 
+    [ 'placeholder', 'email@domain.com' ], 
+    [ 'for', 'email' ], 
+    [ 'class', 'input' ] 
+  ]);
+
+  usernameInput = attrSetter(usernameInput, [ 
+    [ 'placeholder', 'username' ], 
+    [ 'for', 'username' ], 
+    [ 'class', 'input' ] 
+  ]);
+
+  passwordInput = attrSetter(passwordInput, [ 
+    [ 'placeholder', 'password' ], 
+    [ 'for', 'password' ], 
+    [ 'class', 'input' ] 
+  ]);
+
+
+  emailLabel = attrSetter(emailLabel, [
+    [ 'class', 'label' ],
+    [ 'for', 'email' ]
+  ]);
+
+  usernameLabel = attrSetter(usernameLabel, [
+    [ 'class', 'label' ],
+    [ 'for', 'username' ]
+  ]);  
+  
+  passwordLabel = attrSetter(passwordLabel, [
+    [ 'class', 'label' ],
+    [ 'for', 'password' ]
+  ]);  
+
+  emailLabel.innerText = 'Enter your email address';
+  usernameLabel.innerText = 'Enter your username';
+  passwordLabel.innerText = 'Enter your password';
+
+  emailField = multiAppender(emailField, [ emailInput, emailLabel ]);
+  usernameField = multiAppender(usernameField, [ usernameInput, usernameLabel ]);
+  passwordField = multiAppender(passwordField, [ passwordInput, passwordLabel ]);
+  modalForm = multiAppender(modalForm, [ emailField, usernameField, passwordField, submitBtn ]);
 
   submitBtn.addEventListener('click', function(e) {
     e.preventDefault();
 
-    submitSignUp(email.value, username.value, password.value)
+    submitSignUp(emailInput.value, usernameInput.value, passwordInput.value)
   });
 });
 
 // Sign Up Fetch Method: POST
-function submitSignUp(email, username, password) {
+function submitSignUp(emailInput, usernameInput, passwordInput) {
   fetch(`http://thesi.generalassemb.ly:8080/signup`, {
     method: 'POST',
     headers:{
@@ -246,15 +317,18 @@ function submitSignUp(email, username, password) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-        email,
-        username,
-        password,
+        emailInput,
+        usernameInput,
+        passwordInput,
     })})
     .then(response => response.json())
     .then(response => {
       sessionStorage.setItem('token', response.token);
       isAuthenticated = !!sessionStorage.getItem('token');
       logout();
+
+      modal.classList.remove('is-active');
+      modal.classList.toggle('visible');
     })
     .catch(err => console.log(err));
 }
@@ -280,7 +354,6 @@ createPostBtn.addEventListener('click', function(e) {
   createPostForm.append(postDescription);
   createPostForm.append(postSubmitBtn);
   
-
   postSubmitBtn.addEventListener('click', function(e) {
     e.preventDefault();
     let title = postTitle.value;
