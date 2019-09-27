@@ -26,7 +26,8 @@ function fetchAPI () {
 
 //displays all latest 50 posts
 function displayPosts(arr) {
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = arr.length - 1; i >= arr.length - 25; i -= 1) {
+      if (!arr[i]) break;
 
       //creates tags for the post elements in the frontend
       postContainer = document.createElement('div');
@@ -96,7 +97,7 @@ function displayPosts(arr) {
     }
 }
 
-// fetchAPI();
+fetchAPI();
 
 /**
  * @name attrSetter
