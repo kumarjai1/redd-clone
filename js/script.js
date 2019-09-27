@@ -470,7 +470,7 @@ function displayComments (response) {
 function postComments (e) {
   e.preventDefault();
   let token = sessionStorage.getItem('token');
-  let commentText = document.querySelector('#textarea-text').value;
+  let commentText = document.querySelector('#textarea-text');
 
   fetch(`http://thesi.generalassemb.ly:8080/comment/${currentPostID}`, {
     method: 'POST',
@@ -480,13 +480,15 @@ function postComments (e) {
       'Authorization': 'Bearer ' + token
     },
     body: JSON.stringify({
-        text: commentText
+        text: commentText.value
     })})
     .then(response => response.json())
     .then(response => {
         // console.log(response);
         commentBox.remove();
         getComments(currentPostID);
+        commentText.value ='';
+        console.log(commentText);
     })
     .catch(err => console.log(err)); 
 }
