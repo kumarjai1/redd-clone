@@ -11,6 +11,8 @@ let modalForm = document.getElementById('modalForm');
 console.log(navButtons);
 
 
+fetchAPI();
+
 //fetches the post API
 function fetchAPI () {
     fetch(`http://thesi.generalassemb.ly:8080/post/list`)
@@ -27,8 +29,9 @@ function fetchAPI () {
 //displays all latest 50 posts
 function displayPosts(arr) {
   while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
-    for (let i = 0; i < arr.length; i++) {
-
+    for (let i = arr.length-1; i >= arr.length-25; i--) {
+      if (!arr[i]) break;
+      
       //creates tags for the post elements in the frontend
       postContainer = document.createElement('div');
       let postOwner = document.createElement('h4');
@@ -96,8 +99,6 @@ function displayPosts(arr) {
       postStyling (postOwner, postTitle, postContent);
     }
 }
-
-fetchAPI();
 
 /**
  * @name attrSetter
