@@ -142,7 +142,7 @@ function multiAppender(parent, children) {
 }
 
 //login feature
-let loginBtn = createButton('loginBtn', 'Login', 'is-light');
+let loginBtn = createButton('loginBtn', 'Login', 'is-primary is-outlined');
 navButtons.append(loginBtn);
 console.log(loginBtn);
 let loginForm = document.getElementById('loginForm');
@@ -520,11 +520,14 @@ function createComment () {
   let textarea = document.createElement('textarea');
   let submitBtn = document.createElement('button');
   let commentBox = document.createElement('div');
-  submitBtn.innerText = 'Submit Comment'
+  submitBtn.innerText = 'Comment'
   postContainer.append(commentBox);
 
   textarea.setAttribute('id', 'textarea-text');
+  textarea.setAttribute('class', 'textarea is-medium');
   textarea.setAttribute('placeholder', 'Add a comment...');
+
+  submitBtn.setAttribute('class', 'is-outlined button');
 
   commentBox.append(textarea);
   commentBox.append(submitBtn);

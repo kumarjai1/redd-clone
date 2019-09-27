@@ -5,54 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css">
-    <link rel="stylesheet" href="./css/style.css">
-    
-    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">    
+    <title>redd-clone</title>
 </head>
 <body>
+  <header>
     <nav class="navbar" role='navigation' aria-label="main navigation">
        <div class="navbar-brand">
-         <a href="/" class="navbar-item is-size-3">redd-clone</a>
+         <a href="./index.html" class="navbar-item is-size-3">redd-clone</a>
        </div>
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons" id="navButtons">
-            <!-- <a href="" class="button is-primary">Sign Up</a> -->
-            <!-- <a href="" class="button is-light">Login</a> -->
           </div>
         </div>
       </div>
     </nav>
-
-
+  </header>
+  <main>
     <div class="modal">
         <div class="modal-background"></div>
         <div class="modal-content is-clipped">
-              <!-- Any other Bulma elements you want -->
-              <!--form example-->
-          <form id="modalForm"> 
-             
+          <form id="modalForm">         
           </form>
         </div>
         <button class="modal-close is-large" aria-label="close"></button>
     </div>
-
-
-    <!-- <button class="button is-primary is-large modal-button" data-target="modal" aria-haspopup="true">Launch example modal</button> -->
-  
-
-    <!-- <button id="loginBtn">Login</button> -->
-    <!-- <form id="loginForm">
-    </form> -->
-    <!-- <button id="signUpBtn">Sign Up</button> -->
-    <!-- <form id="signUpForm">
-    </form> -->
-
-    <!-- <button id="logoutBtn">Logout</button> -->
-    <button id="createPostBtn">Create Post</button>
-    <div class="container" id="allPosts">
-      
+    <button id="createPostBtn" class="button is-warning">Create Post</button>
+    <div class="container" id="allPosts">  
     </div>
+  </main>
+  <footer class="has-text-centered">
+    @redd-clone 2019 By Jai and Steve
+  </footer>
 
     
     <script src="./js/script.js" ></script>
