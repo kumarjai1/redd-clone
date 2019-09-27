@@ -26,6 +26,7 @@ function fetchAPI () {
 
 //displays all latest 50 posts
 function displayPosts(arr) {
+  while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
     for (let i = 0; i < arr.length; i++) {
 
       //creates tags for the post elements in the frontend
@@ -151,6 +152,7 @@ loginBtn.addEventListener('click', function (e) {
 
   // Empties the modal to prevent redunt forms being appended
   while (modalForm.firstChild) modalForm.removeChild(modalForm.firstChild);
+
 
   modal.classList.toggle('visible');
   modal.classList.add('is-active');
@@ -406,6 +408,7 @@ createPostBtn.addEventListener('click', function(e) {
         console.log(response);
         modal.classList.remove('is-active');
         modal.classList.toggle('visible');  
+        fetchAPI ();
       })
       .catch(err => console.log(err));
   });
