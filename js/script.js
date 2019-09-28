@@ -6,8 +6,12 @@ let postsArr = [];
 let currentPost = {};
 let postContainer;
 let commentBox;
+let main = document.querySelector('main');
 let navButtons = document.getElementById('navButtons');
 let modalForm = document.getElementById('modalForm');
+let paginationBtn;
+let postsStart;
+let postsLimit = 25;
 // console.log(navButtons);
 
 
@@ -22,93 +26,67 @@ function fetchAPI () {
         postsArr = response;
         // console.log({ postsArr });
         displayPosts(response);
+        postsStart = response.length - 1;
     })
     .catch(err => console.log(err)); 
 }
 
 //displays all latest 50 posts
 function displayPosts(arr) {
+  let postsStart = arr.length - 1;
+
   while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
-    for (let i = arr.length-1; i >= arr.length-25; i--) {
-      if (!arr[i]) break;
 
-      let user = arr[i].user.username;
+  for (let i = postsStart; i >= arr.length - postsLimit; i--) {
+    if (!arr[i]) break;
 
-      //creates tags for the post elements in the frontend
-      postContainer = document.createElement('div');
-      let postOwner = document.createElement('h4');
-      let postTitle = document.createElement('a');
-      let postContent = document.createElement('p');
+    let user = arr[i].user.username;
 
-      //defines the content to the tags
-      postContainer.classList.add('container');
-      postOwner.innerText = 'posted by ' + arr[i].user.username;
-      postTitle.innerText = arr[i].title;
-      postContent.innerText = arr[i].description;
+    //creates tags for the post elements in the frontend
+    postContainer = document.createElement('div');
+    let postOwner = document.createElement('h4');
+    let postTitle = document.createElement('a');
+    let postContent = document.createElement('p');
 
-      //console.log(postContent.innerText);
+    //defines the content to the tags
+    postContainer.classList.add('container');
+    postOwner.innerText = 'posted by ' + arr[i].user.username;
+    postTitle.innerText = arr[i].title;
+    postContent.innerText = arr[i].description;
 
-      // Add data-id
-      postTitle.setAttribute('data-id', arr[i].id);
+    // Add data-id
+    postTitle.setAttribute('data-id', arr[i].id);
 
-      //adds to the post container
-      allPosts.append(postContainer);
-      postContainer.append(postOwner);
-      postContainer.append(postTitle);
-      postContainer.append(postContent);
+    // adds to the post container
+    postContainer = multiAppender(postContainer, [ postOwner, postTitle, postContent ]);
+    allPosts.append(postContainer);
 
-      if (user === sessionStorage.getItem('username')) {
-        const deletePostBtn = document.createElement('button');
-        deletePostBtn.innerText = 'Delete';
-        deletePostBtn.setAttribute('data-id', arr[i].id);
-        deletePostBtn.setAttribute('class', 'button is-dark is-small');
-        postContainer.append(deletePostBtn);
-  
-        // deletePostBtn.addEventListener('click', deletePost);
-      }
+    // Delete Post logic
+    if (user === sessionStorage.getItem('username')) {
+      const deletePostBtn = document.createElement('button');
+      deletePostBtn.innerText = 'Delete';
+      deletePostBtn.setAttribute('data-id', arr[i].id);
+      deletePostBtn.setAttribute('class', 'button is-dark is-small');
+      postContainer.append(deletePostBtn);
 
-      postTitle.addEventListener('click', function(e) {
-        // console.log(e.target.dataset.id);
-        currentPostID = e.target.dataset.id;
-
-        // Empties All Posts View for Single Post View
-        allPosts.innerHTML = '';
-        postContainer.innerHTML = '';
-
-        postsArr.forEach(post => {
-          if (post.id === parseInt(currentPostID)) {
-
-            currentPost.id = post.id;
-            currentPost.title = post.title;
-            currentPost.description = post.description;
-            currentPost.user = post.user;
-            // console.log('currentPost', currentPostID);
-
-            // Create Single View Post Elements
-            const singlePostTitle = document.createElement('h1');
-
-            postContainer.classList.add('container');
-            postOwner.innerText = 'posted by ' + post.user.username;
-            singlePostTitle.innerText = post.title;
-            postContent.innerText = post.description;
-
-            // Append Single View Post Elements
-            postContainer.append(postOwner);
-            postContainer.append(singlePostTitle);
-            postContainer.append(postContent);
-            allPosts.append(postContainer);
-            // console.log(postContainer);
-
-            getComments(currentPostID);
-            //postComments();
-            createComment();
-          }
-        });
-
-      })
-
-      postStyling (postOwner, postTitle, postContent);
+      // deletePostBtn.addEventListener('click', deletePost);
     }
+
+    // Click Handler to show single post view
+    postTitle.addEventListener('click', (e) => {
+      singlePostView(e, postOwner, postContent, postContainer);
+    });
+
+    postStyling (postOwner, postTitle, postContent);
+  // Closes for loop
+  }
+  // Show Pagination 'Load More' Button?
+  if (arr[arr.length - postsLimit - 1]) {
+    // console.log('more to load!');
+    paginationBtn = createButton('paginationBtn', 'Load More', 'button is-primary');
+    main.append(paginationBtn);
+    paginationBtn.addEventListener('click', pagination);
+  }  
 }
 
 /**
