@@ -83,6 +83,8 @@ function displayPosts(arr) {
       allPosts.innerHTML = '';
       postContainer.innerHTML = '';
 
+      paginationBtn.remove();
+
       postsArr.forEach(post => {
         if (post.id === parseInt(currentPostID)) {
 
@@ -120,6 +122,7 @@ function displayPosts(arr) {
     // Closes for loop
   }
 
+  // Show Pagination 'Load More' Button?
   if (arr[arr.length - postsLimit - 1]) {
     // console.log('more to load!');
     paginationBtn = createButton('paginationBtn', 'Load More', 'button is-primary');
