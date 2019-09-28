@@ -1,15 +1,13 @@
-console.log('single post view');
-
 function singlePostView(e, postOwner, postContent, postContainer) {
-    // console.log(e.target.dataset.id);
   currentPostID = e.target.dataset.id;
 
   // Empties All Posts View for Single Post View
-  allPosts.innerHTML = '';
-  postContainer.innerHTML = '';
+  while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
+  while (postContainer.firstChild) postContainer.removeChild(postContainer.firstChild);
 
   paginationBtn.remove();
 
+  // Populate the view with Single Post elements
   postsArr.forEach(post => {
     if (post.id === parseInt(currentPostID)) {
 
@@ -17,9 +15,8 @@ function singlePostView(e, postOwner, postContent, postContainer) {
       currentPost.title = post.title;
       currentPost.description = post.description;
       currentPost.user = post.user;
-      // console.log('currentPost', currentPostID);
 
-      // Create Single View Post Elements
+      // Create Single Post View Elements
       const singlePostTitle = document.createElement('h1');
 
       postContainer.classList.add('container');
@@ -28,14 +25,10 @@ function singlePostView(e, postOwner, postContent, postContainer) {
       postContent.innerText = post.description;
 
       // Append Single View Post Elements
-      postContainer.append(postOwner);
-      postContainer.append(singlePostTitle);
-      postContainer.append(postContent);
+      postContainer = multiAppender(postContainer, [ postOwner, singlePostTitle, postContent ]);
       allPosts.append(postContainer);
-      // console.log(postContainer);
 
       getComments(currentPostID);
-      //postComments();
       createComment();
     }
   });

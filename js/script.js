@@ -54,17 +54,14 @@ function displayPosts(arr) {
     postTitle.innerText = arr[i].title;
     postContent.innerText = arr[i].description;
 
-    //console.log(postContent.innerText);
-
     // Add data-id
     postTitle.setAttribute('data-id', arr[i].id);
 
-    //adds to the post container
+    // adds to the post container
+    postContainer = multiAppender(postContainer, [ postOwner, postTitle, postContent ]);
     allPosts.append(postContainer);
-    postContainer.append(postOwner);
-    postContainer.append(postTitle);
-    postContainer.append(postContent);
 
+    // Delete Post logic
     if (user === sessionStorage.getItem('username')) {
       const deletePostBtn = document.createElement('button');
       deletePostBtn.innerText = 'Delete';
@@ -89,8 +86,7 @@ function displayPosts(arr) {
     paginationBtn = createButton('paginationBtn', 'Load More', 'button is-primary');
     main.append(paginationBtn);
     paginationBtn.addEventListener('click', pagination);
-  }
-    
+  }  
 }
 
 /**
