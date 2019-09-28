@@ -12,6 +12,12 @@ let modalForm = document.getElementById('modalForm');
 let paginationBtn;
 let postsStart;
 let postsLimit = 25;
+let loginBtn = createButton('loginBtn', 'Login', 'is-primary is-outlined');
+let loginForm = document.getElementById('loginForm');
+let modalBtn = document.querySelector('.modal-button');
+let modal = document.querySelector('.modal');
+let close = document.querySelector('.modal-close');
+navButtons.append(loginBtn);
 // console.log(navButtons);
 
 
@@ -119,110 +125,15 @@ function multiAppender(parent, children) {
   return parent
 }
 
-//login feature
-let loginBtn = createButton('loginBtn', 'Login', 'is-primary is-outlined');
-navButtons.append(loginBtn);
-// console.log(loginBtn);
-let loginForm = document.getElementById('loginForm');
-
-let modalBtn = document.querySelector('.modal-button');
-let modal = document.querySelector('.modal');
-let close = document.querySelector('.modal-close')
-// console.log(modalBtn);
+// Handles closing the modal
 close.addEventListener('click', function(e) {
   e.preventDefault();
   modal.classList.remove('is-active');
   modal.classList.toggle('visible');
-})
+});
 
-loginBtn.addEventListener('click', function (e) {
-  // console.log(loginForm);
-
-  e.preventDefault();
-
-  // Empties the modal to prevent redunt forms being appended
-  while (modalForm.firstChild) modalForm.removeChild(modalForm.firstChild);
-
-
-  modal.classList.toggle('visible');
-  modal.classList.add('is-active');
-
-  let emailLabel = document.createElement('label');
-  let emailInput = document.createElement('input');
-  let passwordLabel = document.createElement('label');
-  let passwordInput = document.createElement('input');
-  let emailField = document.createElement('div');
-  let passwordField = document.createElement('div');
-  let loginHeading = document.createElement('h2');
-  loginHeading.innerHTML = "Login To Redd Clone </br></br>";
-  loginHeading.setAttribute('class', 'is-size-5');
-
-  let submitBtn = createButton('submitBtn', 'Login', 'button');
-
-  emailField.setAttribute('class', 'field');
-  passwordField.setAttribute('class', 'field');
-  
-  emailInput = attrSetter(emailInput, [ [ 'placeholder', 'email@domain.com' ], [ 'for', 'email' ], [ 'class','input' ] ]);
-  passwordInput = attrSetter(passwordInput, [ [ 'placeholder', 'password' ], [ 'for', 'password' ], [ 'class', 'input' ] ]);
-
-  emailLabel.setAttribute('class', 'label');
-  emailLabel.setAttribute('for', 'email');
-  emailLabel.innerText = 'Enter email address';
-
-  passwordLabel.setAttribute('class', 'label')
-  passwordLabel.setAttribute('for', 'password');
-  passwordLabel.innerText = 'Enter your password';
-
-  submitBtn.innerText = 'Login';
-  submitBtn.classList.add('is-dark')
-
-  modalForm.append(loginHeading);
-  modalForm.append(emailField);
-  modalForm.append(passwordField);
-  emailField.append(emailInput);
-  emailField.append(emailLabel);
-  passwordField.append(passwordInput); 
-  passwordField.append(passwordLabel); 
-
-  modalForm.append(submitBtn);
-
-  submitBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-
-     let emailText = emailInput.value;
-     let passwordText = passwordInput.value;
-
-     submitLogin(emailText, passwordText);   
-    //  console.log(isAuthenticated);
-  })
-})
-
-function submitLogin(email, password) {
-  fetch(`http://thesi.generalassemb.ly:8080/login`, {
-    method: 'POST',
-    headers:{
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        email,
-        password
-    })})
-    .then(response => response.json())
-    .then(response => {
-      if (!!response.token) {
-        sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('username', response.username);
-        isAuthenticated = !!sessionStorage.getItem('token');
-        logout();
-        modal.classList.remove('is-active');
-        modal.classList.toggle('visible');
-      } else {
-        alert('Login Info Incorrect');
-      }
-    })
-    .catch(err => console.log(err));
-}
+// Login Feature
+loginBtn.addEventListener('click', generateLoginForm);
 
 // Sign up features
 const signUpBtn = createButton('signUpBtn', 'Sign Up', 'is-primary');
@@ -275,7 +186,6 @@ signUpBtn.addEventListener('click', function(e) {
     [ 'for', 'password' ], 
     [ 'class', 'input' ] 
   ]);
-
 
   emailLabel = attrSetter(emailLabel, [
     [ 'class', 'label' ],
