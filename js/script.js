@@ -569,6 +569,7 @@ function logout() {
       while (navButtons.firstChild) navButtons.removeChild(navButtons.firstChild);
       navButtons.append(loginBtn);
       navButtons.append(signUpBtn);
+      fetchAPI();
     })
   }
 }
@@ -635,13 +636,18 @@ function displayProfile (response) {
   let mobile = document.createElement('p');
   let address = document.createElement('p');
   let username = document.createElement('p');
+  const editProfile = createButton('updateProfile', 'Edit Profile', 'button is-info is-outlined is-small')
 
   addEmail.innerText = response.additionalEmail;
   mobile.innerText = response.mobile;
   address.innerText = response.address;
   username.innerText = response.user.username;
 
-  allPosts = multiAppender(allPosts, [addEmail, mobile, address, username]);
+  allPosts = multiAppender(allPosts, [addEmail, mobile, address, username, editProfile]);
+
+  editProfile.addEventListener('click', function() {
+    updateProfileForm();
+  })
 }
 
 function displayProfileForm () {
@@ -656,6 +662,43 @@ function displayProfileForm () {
   createProfileBtn.addEventListener('click', function () {
     createProfile(addEmail.value, mobile.value, address.value);
   })
+}
+
+function updateProfileForm() {
+  let addEmail = document.createElement('input');
+  let mobile = document.createElement('input');
+  let address = document.createElement('input');
+  let update = createButton('update', 'Update', 'button is-info is-small')
+  let updateDiv = document.createElement('div');
+  updateDiv.setAttribute('id', 'divUpdateForm');
+
+  allPosts.append(updateDiv);
+
+  updateDiv = multiAppender(updateDiv, [addEmail, mobile, address, update]);
+
+  update.addEventListener('click', function () {
+    updateProfile(addEmail.value, mobile.value, address.value);
+  })
+}
+
+function updateProfile(email, mobile, address) {
+  fetch(`http://thesi.generalassemb.ly:8080/profile`, {
+    method: 'POST',
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +  sessionStorage.getItem('token')
+    },
+    body: JSON.stringify({
+        additionalEmail: email,
+        mobile: mobile,
+        address: address        
+    })})
+    .then(response => response.json())
+    .then(response => {
+      getProfile();
+    })
+    .catch(err => console.log(err));
 }
 
 logout();

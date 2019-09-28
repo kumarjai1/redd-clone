@@ -1,9 +1,12 @@
-#allPosts div:nth-of-type(n) {
-  border-bottom:1px solid lightslategray;
+#allPosts.container div:nth-of-type(n) {
+  border-left:1px solid lightslategray;
   /* border-top: .25px solid gray; */
   margin-top: 25px;
-  padding-top:10px;
-  padding-bottom: 5px;
+  /* padding-top:10px;
+  padding-bottom: 5px; */
+  padding: 1em;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 #modalForm {
   background-color: #CFD8DC;
@@ -33,6 +36,19 @@
 .navbar-item {
   display: flex;
   align-items: center;
+}
+#navButtons i {
+  vertical-align: middle;
+}
+#navButtons a {
+  padding-bottom:0.5rem;
+}
+
+.fixedBottom {
+  text-align: center !important;
+  position: fixed !important;
+  bottom: 0;
+  width: 100%;
 }
 
 @media screen and (max-width:420px) {
