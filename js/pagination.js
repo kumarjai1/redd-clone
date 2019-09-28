@@ -28,6 +28,7 @@ function pagination(e) {
     allPosts.append(postContainer);
     postContainer = multiAppender(postContainer, [ postOwner, postTitle, postContent ]);
 
+    // Adds delete buttons to posts authored by the logged in user
     if (user === sessionStorage.getItem('username')) {
       const deletePostBtn = document.createElement('button');
       deletePostBtn.innerText = 'Delete';
@@ -37,39 +38,10 @@ function pagination(e) {
     }
 
     // Show Single Post View Click Handler
-    postTitle.addEventListener('click', function(e) {
-      currentPostID = e.target.dataset.id;
-      // Empties All Posts View for Single Post View
-      while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
-      while (postContainer.firstChild) postContainer.removeChild(postContainer.firstChild);
-
-      paginationBtn.remove();
-
-      postsArr.forEach(post => {
-        if (post.id === parseInt(currentPostID)) {
-
-          currentPost.id = post.id;
-          currentPost.title = post.title;
-          currentPost.description = post.description;
-          currentPost.user = post.user;
-
-          // Create Single View Post Elements
-          const singlePostTitle = document.createElement('h1');
-
-          postContainer.classList.add('container');
-          postOwner.innerText = 'posted by ' + post.user.username;
-          singlePostTitle.innerText = post.title;
-          postContent.innerText = post.description;
-
-          // Append Single View Post Elements
-          allPosts = multiAppender(allPosts, [ postOwner, singlePostTitle, postContent ]);
-          allPosts.append(postContainer);
-
-          getComments(currentPostID);
-          createComment();
-        }
-      });
+    postTitle.addEventListener('click', (e) => {
+      singlePostView(e, postOwner, postContent, postContainer);
     });
+
     postStyling (postOwner, postTitle, postContent);
   }
 }
