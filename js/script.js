@@ -29,86 +29,99 @@ function fetchAPI () {
 //displays all latest 50 posts
 function displayPosts(arr) {
   while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
-    for (let i = arr.length-1; i >= arr.length-25; i--) {
-      if (!arr[i]) break;
 
-      let user = arr[i].user.username;
+  let limit = 25;
 
-      //creates tags for the post elements in the frontend
-      postContainer = document.createElement('div');
-      let postOwner = document.createElement('h4');
-      let postTitle = document.createElement('a');
-      let postContent = document.createElement('p');
+  for (let i = arr.length - 1; i >= arr.length - limit; i--) {
+    if (!arr[i]) break;
 
-      //defines the content to the tags
-      postContainer.classList.add('container');
-      postOwner.innerText = 'posted by ' + arr[i].user.username;
-      postTitle.innerText = arr[i].title;
-      postContent.innerText = arr[i].description;
+    let user = arr[i].user.username;
 
-      //console.log(postContent.innerText);
+    //creates tags for the post elements in the frontend
+    postContainer = document.createElement('div');
+    let postOwner = document.createElement('h4');
+    let postTitle = document.createElement('a');
+    let postContent = document.createElement('p');
 
-      // Add data-id
-      postTitle.setAttribute('data-id', arr[i].id);
+    //defines the content to the tags
+    postContainer.classList.add('container');
+    postOwner.innerText = 'posted by ' + arr[i].user.username;
+    postTitle.innerText = arr[i].title;
+    postContent.innerText = arr[i].description;
 
-      //adds to the post container
-      allPosts.append(postContainer);
-      postContainer.append(postOwner);
-      postContainer.append(postTitle);
-      postContainer.append(postContent);
+    //console.log(postContent.innerText);
 
-      if (user === sessionStorage.getItem('username')) {
-        const deletePostBtn = document.createElement('button');
-        deletePostBtn.innerText = 'Delete';
-        deletePostBtn.setAttribute('data-id', arr[i].id);
-        deletePostBtn.setAttribute('class', 'button is-dark is-small');
-        postContainer.append(deletePostBtn);
-  
-        // deletePostBtn.addEventListener('click', deletePost);
-      }
+    // Add data-id
+    postTitle.setAttribute('data-id', arr[i].id);
 
-      postTitle.addEventListener('click', function(e) {
-        // console.log(e.target.dataset.id);
-        currentPostID = e.target.dataset.id;
+    //adds to the post container
+    allPosts.append(postContainer);
+    postContainer.append(postOwner);
+    postContainer.append(postTitle);
+    postContainer.append(postContent);
 
-        // Empties All Posts View for Single Post View
-        allPosts.innerHTML = '';
-        postContainer.innerHTML = '';
+    if (user === sessionStorage.getItem('username')) {
+      const deletePostBtn = document.createElement('button');
+      deletePostBtn.innerText = 'Delete';
+      deletePostBtn.setAttribute('data-id', arr[i].id);
+      deletePostBtn.setAttribute('class', 'button is-dark is-small');
+      postContainer.append(deletePostBtn);
 
-        postsArr.forEach(post => {
-          if (post.id === parseInt(currentPostID)) {
-
-            currentPost.id = post.id;
-            currentPost.title = post.title;
-            currentPost.description = post.description;
-            currentPost.user = post.user;
-            // console.log('currentPost', currentPostID);
-
-            // Create Single View Post Elements
-            const singlePostTitle = document.createElement('h1');
-
-            postContainer.classList.add('container');
-            postOwner.innerText = 'posted by ' + post.user.username;
-            singlePostTitle.innerText = post.title;
-            postContent.innerText = post.description;
-
-            // Append Single View Post Elements
-            postContainer.append(postOwner);
-            postContainer.append(singlePostTitle);
-            postContainer.append(postContent);
-            allPosts.append(postContainer);
-            // console.log(postContainer);
-
-            getComments(currentPostID);
-            //postComments();
-            createComment();
-          }
-        });
-
-      })
-
-      postStyling (postOwner, postTitle, postContent);
+      // deletePostBtn.addEventListener('click', deletePost);
     }
+
+    postTitle.addEventListener('click', function(e) {
+      // console.log(e.target.dataset.id);
+      currentPostID = e.target.dataset.id;
+
+      // Empties All Posts View for Single Post View
+      allPosts.innerHTML = '';
+      postContainer.innerHTML = '';
+
+      postsArr.forEach(post => {
+        if (post.id === parseInt(currentPostID)) {
+
+          currentPost.id = post.id;
+          currentPost.title = post.title;
+          currentPost.description = post.description;
+          currentPost.user = post.user;
+          // console.log('currentPost', currentPostID);
+
+          // Create Single View Post Elements
+          const singlePostTitle = document.createElement('h1');
+
+          postContainer.classList.add('container');
+          postOwner.innerText = 'posted by ' + post.user.username;
+          singlePostTitle.innerText = post.title;
+          postContent.innerText = post.description;
+
+          // Append Single View Post Elements
+          postContainer.append(postOwner);
+          postContainer.append(singlePostTitle);
+          postContainer.append(postContent);
+          allPosts.append(postContainer);
+          // console.log(postContainer);
+
+          getComments(currentPostID);
+          //postComments();
+          createComment();
+        }
+      });
+
+    })
+
+    postStyling (postOwner, postTitle, postContent);
+  
+    // Closes for loop
+  }
+
+  if (arr[arr.length - limit - 1]) {
+    // console.log('more to load!');
+    let paginationBtn = createButton('paginationBtn', 'Load More', 'button is-primary');
+    allPosts.append(paginationBtn);
+    paginationBtn.addEventListener('click', pagination);
+  }
+    
 }
 
 /**
