@@ -6,8 +6,12 @@ let postsArr = [];
 let currentPost = {};
 let postContainer;
 let commentBox;
+let main = document.querySelector('main');
 let navButtons = document.getElementById('navButtons');
 let modalForm = document.getElementById('modalForm');
+let paginationBtn;
+let postsStart;
+let postsLimit = 25;
 // console.log(navButtons);
 
 
@@ -22,17 +26,18 @@ function fetchAPI () {
         postsArr = response;
         // console.log({ postsArr });
         displayPosts(response);
+        postsStart = response.length - 1;
     })
     .catch(err => console.log(err)); 
 }
 
 //displays all latest 50 posts
 function displayPosts(arr) {
+  let postsStart = arr.length - 1;
+
   while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
 
-  let limit = 25;
-
-  for (let i = arr.length - 1; i >= arr.length - limit; i--) {
+  for (let i = postsStart; i >= arr.length - postsLimit; i--) {
     if (!arr[i]) break;
 
     let user = arr[i].user.username;
@@ -115,10 +120,10 @@ function displayPosts(arr) {
     // Closes for loop
   }
 
-  if (arr[arr.length - limit - 1]) {
+  if (arr[arr.length - postsLimit - 1]) {
     // console.log('more to load!');
-    let paginationBtn = createButton('paginationBtn', 'Load More', 'button is-primary');
-    allPosts.append(paginationBtn);
+    paginationBtn = createButton('paginationBtn', 'Load More', 'button is-primary');
+    main.append(paginationBtn);
     paginationBtn.addEventListener('click', pagination);
   }
     
