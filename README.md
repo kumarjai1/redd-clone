@@ -9,7 +9,6 @@
 * Figma
 
 ## Approach
-
 We divided the project into three phases - Planning, Development, Debugging and Refactoring Code
 
 ### Planning
@@ -30,10 +29,25 @@ One major hurdle was how to work with the JWT. We managed to overcome this hurdl
 
 ## Installation
 * Clone the repo to a local directory using: git clone <clone link>
+* In commandline, cd into project directory
 * Open index.html in the browser
+  
+### Tests
+To run test-suite:
+* Clone the repo to a local directory using: git clone <clone link>
+* In commandline, cd into project directory
+* In commandline, cd into test-suite directory
+* Open tests.html in the browser
 
 ## User Stories
 [User Stories (Pivotal Tracker)](https://www.pivotaltracker.com/n/projects/2400266)
 
 ## Wireframes
 [Wireframes (Figma)](https://www.figma.com/file/CMN8EEv8dqMifxlgwgM5ru/ReddClone?node-id=17%3A4)
+
+## Deadlines
+| Date | Deliverable |
+| ----------- | ----------- |
+| Wednesday, September 25th by 11:00am | Complete user stories in pivotal tracker |
+| Sunday, September 29th @ 12:00pm | Feature freeze |
+| Monday, September 30th @ 9:15am | Project due and presentations |
