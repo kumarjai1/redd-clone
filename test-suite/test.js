@@ -34,13 +34,49 @@ describe('multiAppender', function() {
 
   parent = multiAppender(parent, [ child1, child2, child3 ]);
 
-  it('should accept a DOM node and append a child element to it', function() {
+  it('should append a child element to a given DOM node and return it', function() {
     expect(parent).to.contain('div');
   });
 
-  it('should accept a DOM node and append multiple child elements to it', function() {
+  it('should append multiple child elements to a DOM node and return it', function() {
     expect(parent).to.have.descendants('div').and.have.length(3);
   });
 });
+
+describe('displayPosts', function() {
+  const posts = dummyPosts;
+  const allPosts = document.querySelector('#allPosts');
+
+  displayPosts(posts);
+  
+  it('should append posts to #allPosts', function() {
+    expect(allPosts).to.have.descendants('div');  
+  });
+
+  it('should only append 25 posts to #allPosts', function() {
+    expect(allPosts).to.have.descendants('div').to.have.length(25);  
+  });
+
+  it('should display a Load More button if there are more posts to display', function() {
+    if (posts.length > 25) {
+      expect(main).to.have.descendant('#paginationBtn');
+    }
+  });
+
+  it('should not display a Load More button if there are less than 25 posts', function() {
+    if (posts.length < 25) {
+      expect(main).not.to.have.descendant('#paginationBtn');
+    }
+  });
+
+
+});
+
+// Temporary fix to combat elements being generated and pended to the body of tests.html after #mocha from scrips.js scripts
+const body = document.querySelector('body');
+while (body.firstChild) body.removeChild(body.firstChild);
+const mochaDiv = document.createElement('div');
+mochaDiv.setAttribute('id', 'mocha');
+document.body.append(mochaDiv);
 
 mocha.run();
