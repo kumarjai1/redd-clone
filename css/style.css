@@ -54,6 +54,14 @@ main {
   display:flex;
   margin: auto;
 }
+
+.input {
+  max-width:250px;
+  display: block;
+}
+.updateBtn {
+  margin-top:1em;
+}
 @media screen and (max-width:420px) {
   .navbar-brand a{
     font-size:1.3em !important;
