@@ -1,5 +1,4 @@
 function pagination(e) {
-  
   postsStart -= postsLimit;
   console.log('from pagination.js pagination() ', postsArr, postsStart);
 
