@@ -68,8 +68,6 @@ describe('displayPosts', function() {
       expect(main).not.to.have.descendant('#paginationBtn');
     }
   });
-
-
 });
 
 // Temporary fix to combat elements being generated and pended to the body of tests.html after #mocha from scrips.js scripts
