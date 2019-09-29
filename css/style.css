@@ -1,9 +1,9 @@
+main {
+  padding-top:1em;
+}
 #allPosts.container div:nth-of-type(n) {
   border-left:1px solid lightslategray;
-  /* border-top: .25px solid gray; */
   margin-top: 25px;
-  /* padding-top:10px;
-  padding-bottom: 5px; */
   padding: 1em;
   padding-top: 0;
   padding-bottom: 0;
@@ -50,7 +50,18 @@
   bottom: 0;
   width: 100%;
 }
+#paginationBtn, #createPostBtn {
+  display:flex;
+  margin: auto;
+}
 
+.input {
+  max-width:250px;
+  display: block;
+}
+.updateBtn {
+  margin-top:1em;
+}
 @media screen and (max-width:420px) {
   .navbar-brand a{
     font-size:1.3em !important;

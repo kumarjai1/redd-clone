@@ -90,7 +90,7 @@ function displayPosts(arr) {
   if (arr[arr.length - postsLimit - 1]) {
     // console.log('more to load!');
     paginationBtn = createButton('paginationBtn', 'Load More', 'button is-primary');
-    main.append(paginationBtn);
+    main.appendChild(paginationBtn);
     paginationBtn.addEventListener('click', pagination);
   }  
 }
@@ -542,20 +542,25 @@ function isProfile (response) {
 }
 
 function displayProfile (response) {
+  // let addEmailLabel = document.createElement('p');
   let addEmail = document.createElement('p');
+  // let mobileLabel = document.createElement('p');
   let mobile = document.createElement('p');
+  // let addressLabel = document.createElement('p');
   let address = document.createElement('p');
   let username = document.createElement('p');
-  const editProfile = createButton('updateProfile', 'Edit Profile', 'button is-info is-outlined is-small')
+  let editProfile = createButton('updateProfile', 'Edit Profile', 'button is-info is-outlined is-small')
 
-  addEmail.innerText = response.additionalEmail;
-  mobile.innerText = response.mobile;
-  address.innerText = response.address;
-  username.innerText = response.user.username;
+  // addEmailLabel.innerText = 'Additional Email Address: ';
+  
+  addEmail.innerHTML = `<strong>Additional Email Address:</strong> </br>${response.additionalEmail}</br></br>`;
+  mobile.innerHTML = `<strong>Mobile:</strong> </br>${response.mobile}</br></br>`;
+  address.innerHTML = `<strong>Address:</strong> </br>${response.address}</br></br>`;
+  username.innerHTML = `<strong>Username:</strong> </br>${response.user.username}</br></br>`;
 
   allPosts = multiAppender(allPosts, [addEmail, mobile, address, username, editProfile]);
 
-  editProfile.addEventListener('click', function() {
+  editProfile.addEventListener('click', function() {  
     updateProfileForm();
   })
 }
@@ -575,17 +580,37 @@ function displayProfileForm () {
 }
 
 function updateProfileForm() {
+  
+  if (document.getElementById('divUpdateForm')) {
+    document.getElementById('divUpdateForm').remove();
+  }
+
+  let updateDiv = document.createElement('div');
   let addEmail = document.createElement('input');
   let mobile = document.createElement('input');
   let address = document.createElement('input');
-  let update = createButton('update', 'Update', 'button is-info is-small')
-  let updateDiv = document.createElement('div');
+  let update = createButton('update', 'Update', 'button is-danger is-outlined is-small updateBtn')
+  
+  addEmail.setAttribute('class', 'input');
+  mobile.setAttribute('class', 'input');
+  mobile.setAttribute('class', 'input');
+  address.setAttribute('class', 'input');
+
+  let addEmailLabel = document.createElement('label');
+  let mobileLabel = document.createElement('label');
+  let addressLabel = document.createElement('label');
+
+  addEmailLabel.innerText = 'Additional Email Address: ';
+  mobileLabel.innerText = ' Mobile: ';
+  addressLabel.innerText = ' Address: ';
+  
   updateDiv.setAttribute('id', 'divUpdateForm');
 
+  
   allPosts.append(updateDiv);
 
-  updateDiv = multiAppender(updateDiv, [addEmail, mobile, address, update]);
-
+  updateDiv = multiAppender(updateDiv, [addEmailLabel, addEmail, mobileLabel, mobile, addressLabel, address, update]);
+  
   update.addEventListener('click', function () {
     updateProfile(addEmail.value, mobile.value, address.value);
   })
