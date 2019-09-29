@@ -45,10 +45,7 @@ main {
 }
 
 .fixedBottom {
-  text-align: center !important;
-  position: fixed !important;
-  bottom: 0;
-  width: 100%;
+  margin-top:2em;
 }
 #paginationBtn, #createPostBtn {
   display:flex;
