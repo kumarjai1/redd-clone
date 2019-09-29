@@ -48,6 +48,6 @@ To run test-suite:
 ## Deadlines
 | Date | Deliverable |
 | ----------- | ----------- |
-| Wednesday, September 25th by 11:00am | Complete user stories in pivotal tracker |
+| Wednesday, September 25th @ 11:00am | Complete user stories in pivotal tracker |
 | Sunday, September 29th @ 12:00pm | Feature freeze |
 | Monday, September 30th @ 9:15am | Project due and presentations |
