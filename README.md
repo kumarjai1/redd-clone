@@ -15,7 +15,7 @@
 We divided the project into three phases - Planning, Development, Debugging and Refactoring Code
 
 ### Planning
-We discussed project both of our working styles, our experiences, and how to best work together in completing the project.
+We discussed both of our working styles, our experiences, and how to best work together in completing the project.
 Then, we created a list of features that are minimally required to deliver the project. Additionally we listed features, which we thought are helpful or nice to have, but were outside the scope of the project (i.e. email validation on the user side ).  We then created user stories for the features in Pivotal Tracker, so we could focus on implementing the minimum required features and manage the tasks effectively.
 
 After creating the user stories, we decided to create the wireframes for the required features using Figma, a web application for wireframing and prototyping.
