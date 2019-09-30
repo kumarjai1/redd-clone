@@ -495,6 +495,7 @@ function createButton (id, innerText, className) {
 
 
 function getProfile () {
+  paginationBtn.remove();
   fetch(`http://thesi.generalassemb.ly:8080/profile`, {
     method: 'GET',
     headers:{
@@ -593,8 +594,11 @@ function updateProfileForm() {
   
   addEmail.setAttribute('class', 'input');
   mobile.setAttribute('class', 'input');
-  mobile.setAttribute('class', 'input');
   address.setAttribute('class', 'input');
+  addEmail.setAttribute('placeholder', 'username@email.com');
+  mobile.setAttribute('placeholder', '123.456.789');
+  address.setAttribute('placeholder', '123 Name St, City, State, 12345');
+
 
   let addEmailLabel = document.createElement('label');
   let mobileLabel = document.createElement('label');
