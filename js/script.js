@@ -3,7 +3,6 @@ let allPosts = document.getElementById('allPosts');
 let main = document.querySelector('main');
 let navButtons = document.getElementById('navButtons');
 let modalForm = document.getElementById('modalForm');
-let loginForm = document.getElementById('loginForm');
 let modalBtn = document.querySelector('.modal-button');
 let modal = document.querySelector('.modal');
 let close = document.querySelector('.modal-close');
@@ -21,12 +20,13 @@ let commentBox;
 let paginationBtn;
 let postsStart;
 let postsLimit = 25;
-let loginBtn = createButton('loginBtn', 'Login', 'is-primary is-outlined');
 
-navButtons.append(loginBtn);
 // console.log(isAuthenticated);
 
-// Fetches the posts API, get many, method: GET
+// Posts Feature
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Fetches the posts API, get many, Method: GET
 function getPosts () {
     fetch(`http://thesi.generalassemb.ly:8080/post/list`)
     .then(response => response.json())
@@ -106,9 +106,18 @@ close.addEventListener('click', function(e) {
 });
 
 // Login Feature
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let loginForm = document.getElementById('loginForm');
+let loginBtn = createButton('loginBtn', 'Login', 'is-primary is-outlined');
+
+navButtons.append(loginBtn);
+
 loginBtn.addEventListener('click', generateLoginForm);
 
-// Sign up features
+// Sign Up Feature
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const signUpBtn = createButton('signUpBtn', 'Sign Up', 'is-primary');
 navButtons.append(signUpBtn);
 
@@ -191,7 +200,7 @@ signUpBtn.addEventListener('click', function(e) {
   });
 });
 
-// Sign Up Fetch Method: POST
+// Sign Up Fetch, Method: POST
 function submitSignUp(emailInput, usernameInput, passwordInput) {
   // console.log(emailInput, usernameInput, passwordInput);
 
@@ -230,9 +239,6 @@ let createPostBtn = document.querySelector('#createPostBtn');
 createPostBtn.addEventListener('click', function(e) {
   e.preventDefault();
 
-  //const createPostForm = document.createElement('form');
-  //document.body.appendChild(createPostForm);
-
   while (modalForm.firstChild) modalForm.removeChild(modalForm.firstChild);
 
   modal.classList.toggle('visible');
@@ -258,17 +264,9 @@ createPostBtn.addEventListener('click', function(e) {
   postDescription = attrSetter(postDescription, [['class', 'input'], ['placeholder', 'Please describe your post in detail (Optional)']]);
   // console.log(postTitle, postDescription);
 
-  // postTitle.setAttribute('placeholder', 'Title');
-  // postDescription.setAttribute('placeholder', 'Please describe your post in detail (Optional)');
-  // postSubmitBtn.innerText = 'POST';
-
   titleField = multiAppender(titleField, [postTitle, titleLabel]);
   descField = multiAppender(descField, [postDescription, descLabel]);
   modalForm = multiAppender(modalForm, [titleField, descField, postSubmitBtn]);
-
-  // createPostForm.append(postTitle);
-  // createPostForm.append(postDescription);
-  // createPostForm.append(postSubmitBtn);
   
   postSubmitBtn.addEventListener('click', function(e) {
     e.preventDefault();
@@ -304,14 +302,10 @@ createPostBtn.addEventListener('click', function(e) {
   });
 });
 
+// Comments Feature
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function postStyling(postOwner, title, description) {
-  postOwner.setAttribute('class', 'is-size-7');
-  title.setAttribute('class', 'is-size-4');
-  title.classList.add('class', 'has-text-black-bis')
-  description.setAttribute('class', 'is-size-6');
-}
-
+// Gets all comments associated with a given Post's id, get many, Method: GET
 function getComments (id) {
   fetch(`http://thesi.generalassemb.ly:8080/post/${id}/comment`)
     .then(response => response.json())
@@ -322,6 +316,7 @@ function getComments (id) {
     .catch(err => console.log(err)); 
 }
 
+// Displays the fetched comments on the Single Post View
 function displayComments (response) {
   commentBox = document.createElement('div');
   postContainer.append(commentBox);
@@ -358,6 +353,29 @@ function displayComments (response) {
   });
 }
 
+// Generates a form to allow a user to create a comment
+function createComment () {
+  let textarea = document.createElement('textarea');
+  let submitBtn = document.createElement('button');
+  let commentBox = document.createElement('div');
+
+  submitBtn.innerText = 'Comment'
+  postContainer.append(commentBox);
+
+  textarea.setAttribute('id', 'textarea-text');
+  textarea.setAttribute('class', 'textarea is-medium');
+  textarea.setAttribute('placeholder', 'Add a comment...');
+
+  submitBtn.setAttribute('class', 'is-outlined button');
+
+  commentBox.append(textarea);
+  commentBox.append(submitBtn);
+  // console.log(textarea);
+
+  submitBtn.addEventListener('click', postComments);
+}
+
+// Fetch call to post a new comment, Method: POST
 function postComments (e) {
   e.preventDefault();
   let token = sessionStorage.getItem('token');
@@ -384,27 +402,7 @@ function postComments (e) {
     .catch(err => console.log(err)); 
 }
 
-function createComment () {
-  let textarea = document.createElement('textarea');
-  let submitBtn = document.createElement('button');
-  let commentBox = document.createElement('div');
-  submitBtn.innerText = 'Comment'
-  postContainer.append(commentBox);
-
-  textarea.setAttribute('id', 'textarea-text');
-  textarea.setAttribute('class', 'textarea is-medium');
-  textarea.setAttribute('placeholder', 'Add a comment...');
-
-  submitBtn.setAttribute('class', 'is-outlined button');
-
-  commentBox.append(textarea);
-  commentBox.append(submitBtn);
-  // console.log(textarea);
-
-  submitBtn.addEventListener('click', postComments);
-}
-
-
+// Checks if a user is authorized to delete a comment, then calls a fetch to delete the comment, Method: DELETE
 function deleteComments (e) {
   // console.log('delCom e', e);
   let token = sessionStorage.getItem('token');
@@ -426,6 +424,9 @@ function deleteComments (e) {
     })
     .catch(err => console.log(err)); 
 }
+
+// Logout and Authentication Feature
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function logout() {
   let username = sessionStorage.getItem('username') || '';
@@ -457,7 +458,9 @@ function logout() {
 }
 
 // User Profile Features
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Fetch call to get a user's profile, get one, Method: GET
 function getProfile () {
   paginationBtn.remove();
   fetch(`http://thesi.generalassemb.ly:8080/profile`, {
@@ -474,6 +477,7 @@ function getProfile () {
     .catch(err => console.log(err));
 }
 
+// Fetch call to generate a user's profile, Method: POST
 function createProfile(email, mobile, address) {
   
   fetch(`http://thesi.generalassemb.ly:8080/profile`, {
@@ -516,8 +520,6 @@ function displayProfile (response) {
   let address = document.createElement('p');
   let username = document.createElement('p');
   let editProfile = createButton('updateProfile', 'Edit Profile', 'button is-info is-outlined is-small')
-
-  // addEmailLabel.innerText = 'Additional Email Address: ';
   
   addEmail.innerHTML = `<strong>Additional Email Address:</strong> </br>${response.additionalEmail}</br></br>`;
   mobile.innerHTML = `<strong>Mobile:</strong> </br>${response.mobile}</br></br>`;
@@ -582,7 +584,6 @@ function updateProfileForm() {
   mobile.setAttribute('placeholder', '123.456.789');
   address.setAttribute('placeholder', '123 Name St, City, State, 12345');
 
-
   let addEmailLabel = document.createElement('label');
   let mobileLabel = document.createElement('label');
   let addressLabel = document.createElement('label');
@@ -624,6 +625,8 @@ function updateProfile(email, mobile, address) {
 }
 
 // Helper Functions
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
  * @name attrSetter
  * @description Takes a variable storing a DOM element and sets multiple attributes to the element
@@ -671,7 +674,23 @@ function createButton (id, innerText, className) {
   return btn;
 }
 
-// Default function executions on page load
+/**
+ * @name postStyling
+ * @description Uses Bulma classes to style an element passed in, specifically for styling posts
+ * @param { variable } postOwner A DOM node set to a variable that is the username of the post author
+ * @param { variable } title A DOM node set to a variable that is the title of the post
+ * @param { variable } description A DOM node set to a variable that is the text body of the post
+ */
+function postStyling(postOwner, title, description) {
+  postOwner.setAttribute('class', 'is-size-7');
+  title.setAttribute('class', 'is-size-4');
+  title.classList.add('class', 'has-text-black-bis')
+  description.setAttribute('class', 'is-size-6');
+}
+
+// Default function invocations on page load
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 logout();
 getPosts();
 
