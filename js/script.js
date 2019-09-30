@@ -572,8 +572,24 @@ function displayProfileForm () {
   let mobile = document.createElement('input');
   let address = document.createElement('input');
   let createProfileBtn = createButton('createProfile', 'Create Profile', 'button is-primary');
+
+  let addEmailLabel = document.createElement('label');
+  let mobileLabel = document.createElement('label');
+  let addressLabel = document.createElement('label');
+
+  addEmailLabel.innerText = 'Additional Email Address: ';
+  mobileLabel.innerText = ' Mobile: ';
+  addressLabel.innerText = ' Address: ';
+
+  addEmail.setAttribute('class', 'input');
+  mobile.setAttribute('class', 'input');
+  address.setAttribute('class', 'input');
+  addEmail.setAttribute('placeholder', 'username@email.com');
+  mobile.setAttribute('placeholder', '123.456.789');
+  address.setAttribute('placeholder', '123 Name St, City, State, 12345');
+
   
-  allPosts = multiAppender(allPosts, [addEmail, mobile, address, createProfileBtn]);
+  allPosts = multiAppender(allPosts, [addEmailLabel, addEmail, mobileLabel, mobile, addressLabel, address, createProfileBtn]);
 
   createProfileBtn.addEventListener('click', function () {
     createProfile(addEmail.value, mobile.value, address.value);
