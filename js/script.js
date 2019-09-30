@@ -1,30 +1,33 @@
+// Global Dom Selections
 let allPosts = document.getElementById('allPosts');
-let currentPostID;
-let isAuthenticated = !!sessionStorage.getItem('token') || false;
-console.log(isAuthenticated);
-let postsArr = [];
-let currentPost = {};
-let postContainer;
-let commentBox;
 let main = document.querySelector('main');
 let navButtons = document.getElementById('navButtons');
 let modalForm = document.getElementById('modalForm');
-let paginationBtn;
-let postsStart;
-let postsLimit = 25;
-let loginBtn = createButton('loginBtn', 'Login', 'is-primary is-outlined');
 let loginForm = document.getElementById('loginForm');
 let modalBtn = document.querySelector('.modal-button');
 let modal = document.querySelector('.modal');
 let close = document.querySelector('.modal-close');
+
+// Checks if user is authenticated on page loaded. If token exists in sessionStorage, set to true, else set to false
+let isAuthenticated = !!sessionStorage.getItem('token') || false;
+
+let postsArr = [];
+let currentPost = {};
+
+// Global vars initialized as undefined to allow for later assignment
+let currentPostID;
+let postContainer;
+let commentBox;
+let paginationBtn;
+let postsStart;
+let postsLimit = 25;
+let loginBtn = createButton('loginBtn', 'Login', 'is-primary is-outlined');
+
 navButtons.append(loginBtn);
-// console.log(navButtons);
+// console.log(isAuthenticated);
 
-
-fetchAPI();
-
-//fetches the post API
-function fetchAPI () {
+// Fetches the posts API, get many, method: GET
+function getPosts () {
     fetch(`http://thesi.generalassemb.ly:8080/post/list`)
     .then(response => response.json())
     .then(response => {
@@ -37,7 +40,7 @@ function fetchAPI () {
     .catch(err => console.log(err)); 
 }
 
-//displays all latest 50 posts
+// Displays the latest 25 posts
 function displayPosts(arr) {
   let postsStart = arr.length - 1;
 
@@ -93,36 +96,6 @@ function displayPosts(arr) {
     main.appendChild(paginationBtn);
     paginationBtn.addEventListener('click', pagination);
   }  
-}
-
-/**
- * @name attrSetter
- * @description Takes a variable storing a DOM element and sets multiple attributes to the element
- * @param { variable } elVar The variable storing the element to set attributes to
- * @param { array } attrs An array of arrays of attributes to set to the element where arr[0] is the attribute and arr[1] is the attribute's value
- * @returns Returns the variable storing the DOM element
- */
-function attrSetter(elVar, attrs) {
-  attrs.forEach(attr => {
-    elVar.setAttribute(attr[0], attr[1]);
-  });
-
-  return elVar;
-}
-
-/**
- * @name multiAppender
- * @description Takes an array of child nodes and appends the child nodes to the parent node
- * @param { variable } parent The parent node to append the child elements to
- * @param { array } children An array of child nodes to append to the parent
- * @returns A variable storing the parent node
- */
-function multiAppender(parent, children) {
-  children.forEach(child => {
-    parent.append(child);
-  });
-
-  return parent
 }
 
 // Handles closing the modal
@@ -321,10 +294,10 @@ createPostBtn.addEventListener('click', function(e) {
         } else if (!title) { 
           alert('Post must have a title');
         } else {
-          console.log(response);
+          // console.log(response);
           modal.classList.remove('is-active');
           modal.classList.toggle('visible');  
-          fetchAPI ();
+          getPosts ();
         }
       })
       .catch(err => console.log(err));
@@ -373,7 +346,7 @@ function displayComments (response) {
     
     // Logic for deleting comment buttons by matching username
     if (user === sessionStorage.getItem('username')) {
-      console.log('username match');
+      // console.log('username match');
       const deleteCommentBtn = document.createElement('button');
       deleteCommentBtn.innerText = 'Delete';
       deleteCommentBtn.setAttribute('data-id', comment.id);
@@ -426,7 +399,7 @@ function createComment () {
 
   commentBox.append(textarea);
   commentBox.append(submitBtn);
-  console.log(textarea);
+  // console.log(textarea);
 
   submitBtn.addEventListener('click', postComments);
 }
@@ -436,7 +409,7 @@ function deleteComments (e) {
   // console.log('delCom e', e);
   let token = sessionStorage.getItem('token');
   //let commentText = document.querySelector('#textarea-text').value;
-  console.log("comments", e.target.dataset.id);
+  // console.log("comments", e.target.dataset.id);
   fetch(`http://thesi.generalassemb.ly:8080/comment/${e.target.dataset.id}`, {
     method: 'DELETE',
     headers:{
@@ -457,9 +430,8 @@ function deleteComments (e) {
 function logout() {
   let username = sessionStorage.getItem('username') || '';
 
-  console.log('logout func fired', isAuthenticated);
+  // console.log('logout func fired', isAuthenticated);
   if (!!isAuthenticated) {
-    console.log('logout conditional fired');
     let logoutBtn = createButton('logout', 'Logout', 'is-light');
     while (navButtons.firstChild) navButtons.removeChild(navButtons.firstChild);
     navButtons.append(logoutBtn);
@@ -479,20 +451,12 @@ function logout() {
       while (navButtons.firstChild) navButtons.removeChild(navButtons.firstChild);
       navButtons.append(loginBtn);
       navButtons.append(signUpBtn);
-      fetchAPI();
+      getPosts();
     })
   }
 }
 
-function createButton (id, innerText, className) {
-  let btn = document.createElement('button');
-  btn.setAttribute('id', id);
-  btn.innerText = innerText;
-  btn.setAttribute('class', className);
-  btn.classList.add('button');
-  return btn;
-}
-
+// User Profile Features
 
 function getProfile () {
   paginationBtn.remove();
@@ -531,7 +495,7 @@ function createProfile(email, mobile, address) {
     .catch(err => console.log(err));
 }
 
-
+// Checks if user has a profile. If profile exists, show user's current profile, else show create profile form
 function isProfile (response) {
   while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
   if (!!response.id) {
@@ -542,6 +506,7 @@ function isProfile (response) {
   }
 }
 
+// Shows the user's profile
 function displayProfile (response) {
   // let addEmailLabel = document.createElement('p');
   let addEmail = document.createElement('p');
@@ -566,6 +531,7 @@ function displayProfile (response) {
   })
 }
 
+// Displays a form to allow the user to create a profile
 function displayProfileForm () {
   
   let addEmail = document.createElement('input');
@@ -596,6 +562,7 @@ function displayProfileForm () {
   })
 }
 
+// Shows a form to allow the user to update their profile
 function updateProfileForm() {
   
   if (document.getElementById('divUpdateForm')) {
@@ -626,7 +593,6 @@ function updateProfileForm() {
   
   updateDiv.setAttribute('id', 'divUpdateForm');
 
-  
   allPosts.append(updateDiv);
 
   updateDiv = multiAppender(updateDiv, [addEmailLabel, addEmail, mobileLabel, mobile, addressLabel, address, update]);
@@ -636,6 +602,7 @@ function updateProfileForm() {
   })
 }
 
+// Fetch function to update the user's profile
 function updateProfile(email, mobile, address) {
   fetch(`http://thesi.generalassemb.ly:8080/profile`, {
     method: 'POST',
@@ -656,4 +623,55 @@ function updateProfile(email, mobile, address) {
     .catch(err => console.log(err));
 }
 
+// Helper Functions
+/**
+ * @name attrSetter
+ * @description Takes a variable storing a DOM element and sets multiple attributes to the element
+ * @param { variable } elVar The variable storing the element to set attributes to
+ * @param { array } attrs An array of arrays of attributes to set to the element where arr[0] is the attribute and arr[1] is the attribute's value
+ * @returns Returns the variable storing the DOM element
+ */
+function attrSetter(elVar, attrs) {
+  attrs.forEach(attr => {
+    elVar.setAttribute(attr[0], attr[1]);
+  });
+
+  return elVar;
+}
+
+/**
+ * @name multiAppender
+ * @description Takes an array of child nodes and appends the child nodes to the parent node
+ * @param { variable } parent The parent node to append the child elements to
+ * @param { array } children An array of child nodes to append to the parent
+ * @returns A variable storing the parent node
+ */
+function multiAppender(parent, children) {
+  children.forEach(child => {
+    parent.append(child);
+  });
+
+  return parent
+}
+
+/**
+ * @name createButton
+ * @description Creates a button and sets the attributes and innerText arguments to the button
+ * @param { string } id The id to assign to the button
+ * @param { string } innerText The text to be shown on the button face
+ * @param { string } className The classes to be assigned to the button for Bulma styling
+ * @returns A button to be stored in a variable
+ */
+function createButton (id, innerText, className) {
+  let btn = document.createElement('button');
+  btn.setAttribute('id', id);
+  btn.innerText = innerText;
+  btn.setAttribute('class', className);
+  btn.classList.add('button');
+  return btn;
+}
+
+// Default function executions on page load
 logout();
+getPosts();
+
