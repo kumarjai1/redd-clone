@@ -5,6 +5,9 @@
 * CSS
 * Javascript
 * Bulma.io
+* Mocha.js
+* Chai.js
+* Chai-Dom.js
 * Pivotal Tracker
 * Figma
 
@@ -26,6 +29,8 @@ We decided to refactor code, so we could eliminate bugs and build upon the appli
 
 ## Unsolved Problems and Major Hurdles
 One major hurdle was how to work with the JWT. We managed to overcome this hurdle by using Google and figuring out that the token needed to be passed in the headers for POST requests. Another hurdle was having the application to remember that we were authenticated for coniditional rendering purposes such as whether login and sign up buttons should appear or be replaced with a user greeting.
+
+There is a bug with the Load More button that implements Posts pagination where it appears unexpectedly. We were unable to get to fixing this bug before the features freeze and presentations deadline. 
 
 ## Installation
 * Clone the repo to a local directory using: git clone <clone link>
