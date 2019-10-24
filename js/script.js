@@ -25,7 +25,10 @@ fetchAPI();
 
 //fetches the post API
 function fetchAPI () {
-    fetch(`http://thesi.generalassemb.ly:8080/post/list`)
+    fetch(`http://localhost:8080/redd-clone/post/posts`, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'}})
     .then(response => response.json())
     .then(response => {
         // console.log(response)
@@ -222,7 +225,7 @@ signUpBtn.addEventListener('click', function(e) {
 function submitSignUp(emailInput, usernameInput, passwordInput) {
   // console.log(emailInput, usernameInput, passwordInput);
 
-  fetch(`http://thesi.generalassemb.ly:8080/signup`, {
+  fetch(`http://localhost:8080/redd-clone/user/signup`, {
     method: 'POST',
     headers:{
       'Accept': 'application/json',
@@ -303,7 +306,7 @@ createPostBtn.addEventListener('click', function(e) {
     let token = sessionStorage.getItem('token');
     let description = postDescription.value;
     
-    fetch(`http://thesi.generalassemb.ly:8080/post`, {
+    fetch(`http://localhost:8080/redd-clone/post/${sessionStorage.getItem('username')}`, {
       method: 'POST',
       headers:{
         'Accept': 'application/json',
@@ -340,7 +343,7 @@ function postStyling(postOwner, title, description) {
 }
 
 function getComments (id) {
-  fetch(`http://thesi.generalassemb.ly:8080/post/${id}/comment`)
+  fetch(`http://localhost:8080/redd-clone/post/${id}/comment`)
     .then(response => response.json())
     .then(response => {
         // console.log(response);
@@ -390,7 +393,7 @@ function postComments (e) {
   let token = sessionStorage.getItem('token');
   let commentText = document.querySelector('#textarea-text');
 
-  fetch(`http://thesi.generalassemb.ly:8080/comment/${currentPostID}`, {
+  fetch(`http://localhost:8080/redd-clone/comment/${currentPostID}`, {
     method: 'POST',
     headers:{
       'Accept': 'application/json',
@@ -437,7 +440,7 @@ function deleteComments (e) {
   let token = sessionStorage.getItem('token');
   //let commentText = document.querySelector('#textarea-text').value;
   console.log("comments", e.target.dataset.id);
-  fetch(`http://thesi.generalassemb.ly:8080/comment/${e.target.dataset.id}`, {
+  fetch(`http://localhost:8080/redd-clone/comment/${e.target.dataset.id}`, {
     method: 'DELETE',
     headers:{
       'Accept': 'application/json',
@@ -496,7 +499,7 @@ function createButton (id, innerText, className) {
 
 function getProfile () {
   paginationBtn.remove();
-  fetch(`http://thesi.generalassemb.ly:8080/profile`, {
+  fetch(`http://localhost:8080/redd-clone/profile`, {
     method: 'GET',
     headers:{
       'Accept': 'application/json',
@@ -512,7 +515,7 @@ function getProfile () {
 
 function createProfile(email, mobile, address) {
   
-  fetch(`http://thesi.generalassemb.ly:8080/profile`, {
+  fetch(`http://localhost:8080/redd-clone/profile`, {
     method: 'POST',
     headers:{
       'Accept': 'application/json',
@@ -637,7 +640,7 @@ function updateProfileForm() {
 }
 
 function updateProfile(email, mobile, address) {
-  fetch(`http://thesi.generalassemb.ly:8080/profile`, {
+  fetch(`http://localhost:8080/redd-clone/profile`, {
     method: 'POST',
     headers:{
       'Accept': 'application/json',

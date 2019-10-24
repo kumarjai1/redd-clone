@@ -56,7 +56,7 @@ function generateLoginForm (e) {
 }
 
 function submitLogin(email, password) {
-  fetch(`http://thesi.generalassemb.ly:8080/login`, {
+  fetch(`http://localhost:8080/redd-clone/user/login`, {
     method: 'POST',
     headers:{
       'Accept': 'application/json',
