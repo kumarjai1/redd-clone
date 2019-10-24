@@ -31,7 +31,7 @@ function fetchAPI () {
       'Content-Type': 'application/json'}})
     .then(response => response.json())
     .then(response => {
-        // console.log(response)
+        console.log(response)
         postsArr = response;
         // console.log({ postsArr });
         displayPosts(response);
@@ -343,7 +343,11 @@ function postStyling(postOwner, title, description) {
 }
 
 function getComments (id) {
-  fetch(`http://localhost:8080/redd-clone/post/${id}/comment`)
+  fetch(`http://localhost:8080/redd-clone/post/${id}/comment`, {
+    headers:{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }})
     .then(response => response.json())
     .then(response => {
         // console.log(response);
@@ -392,6 +396,7 @@ function postComments (e) {
   e.preventDefault();
   let token = sessionStorage.getItem('token');
   let commentText = document.querySelector('#textarea-text');
+  console.log(currentPostID);
 
   fetch(`http://localhost:8080/redd-clone/comment/${currentPostID}`, {
     method: 'POST',

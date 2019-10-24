@@ -5,7 +5,7 @@ function singlePostView(e, postOwner, postContent, postContainer) {
   while (allPosts.firstChild) allPosts.removeChild(allPosts.firstChild);
   while (postContainer.firstChild) postContainer.removeChild(postContainer.firstChild);
 
-  paginationBtn.remove();
+  // paginationBtn.remove();
 
   // Populate the view with Single Post elements
   postsArr.forEach(post => {
