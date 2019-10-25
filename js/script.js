@@ -513,6 +513,7 @@ function getProfile () {
     }})
     .then(response => response.json())
     .then(response => {
+      console.log(response);
       isProfile(response);
     })
     .catch(err => console.log(err));
@@ -565,7 +566,8 @@ function displayProfile (response) {
   addEmail.innerHTML = `<strong>Additional Email Address:</strong> </br>${response.additionalEmail}</br></br>`;
   mobile.innerHTML = `<strong>Mobile:</strong> </br>${response.mobile}</br></br>`;
   address.innerHTML = `<strong>Address:</strong> </br>${response.address}</br></br>`;
-  username.innerHTML = `<strong>Username:</strong> </br>${response.user.username}</br></br>`;
+  // username.innerHTML = `<strong>Username:</strong> </br>${response.user.username}</br></br>`;
+  username.innerHTML = `<strong>Username:</strong> </br>${sessionStorage.getItem('username')}</br></br>`;
 
   allPosts = multiAppender(allPosts, [addEmail, mobile, address, username, editProfile]);
 
@@ -645,7 +647,7 @@ function updateProfileForm() {
 }
 
 function updateProfile(email, mobile, address) {
-  fetch(`http://localhost:8080/redd-clone/profile`, {
+  fetch(`http://localhost:8080/redd-clone/profile/${sessionStorage.getItem('username')}`, {
     method: 'POST',
     headers:{
       'Accept': 'application/json',
