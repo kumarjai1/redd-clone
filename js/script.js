@@ -503,8 +503,8 @@ function createButton (id, innerText, className) {
 
 
 function getProfile () {
-  paginationBtn.remove();
-  fetch(`http://localhost:8080/redd-clone/profile`, {
+  // paginationBtn.remove();
+  fetch(`http://localhost:8080/redd-clone/profile/${sessionStorage.getItem('username')}`, {
     method: 'GET',
     headers:{
       'Accept': 'application/json',
@@ -520,7 +520,7 @@ function getProfile () {
 
 function createProfile(email, mobile, address) {
   
-  fetch(`http://localhost:8080/redd-clone/profile`, {
+  fetch(`http://localhost:8080/redd-clone/profile/${sessionStorage.getItem('username')}`, {
     method: 'POST',
     headers:{
       'Accept': 'application/json',
